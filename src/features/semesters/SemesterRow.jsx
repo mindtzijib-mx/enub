@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Button from "../../ui/Button";
+import { NavLink } from "react-router-dom";
 
 const TableRow = styled.div`
   display: grid;
@@ -13,14 +14,32 @@ const TableRow = styled.div`
   }
 `;
 
+const ButtonLink = styled(NavLink)`
+  border: none;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+
+  font-size: 1.4rem;
+  padding: 1.2rem 1.6rem;
+  font-weight: 500;
+  text-align: center;
+
+  color: var(--color-brand-50);
+  background-color: var(--color-brand-600);
+
+  &:hover {
+    background-color: var(--color-brand-700);
+  }
+`;
+
 function SemesterRow({ semester }) {
-  const { semester: semesterRecord, school_year } = semester;
+  const { semester: semesterRecord, school_year, id } = semester;
   return (
     <>
       <TableRow role="row">
         <p>{semesterRecord}</p>
         <p>{school_year}</p>
-        <Button>Administrar</Button>
+        <ButtonLink to={`/semesters/${id}`}>Administrar</ButtonLink>
       </TableRow>
     </>
   );

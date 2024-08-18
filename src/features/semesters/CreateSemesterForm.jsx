@@ -1,8 +1,7 @@
-import Input from "../../ui/Input";
+import { useForm } from "react-hook-form";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FormRow from "../../ui/FormRow";
-import { useForm } from "react-hook-form";
 import Select from "../../ui/Select";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createSemester } from "../../services/apiSemesters";
@@ -25,8 +24,6 @@ function CreateSemesterForm() {
   });
 
   function onSubmit(data) {
-    console.log(data);
-
     mutate(data);
   }
 
@@ -86,7 +83,7 @@ function CreateSemesterForm() {
 
       <FormRow>
         <Button variation="secondary" type="reset">
-          Cancel
+          Cancelar
         </Button>
         <Button>Agregar Semestre</Button>
       </FormRow>

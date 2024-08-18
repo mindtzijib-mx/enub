@@ -32,13 +32,11 @@ function SemesterTable() {
 
   if (isLoading) return <Spinner />;
 
-  console.log(semesters);
-
   return (
     <Table role="table">
       <TableHeader role="row">
         <div>Semestre</div>
-        <div>Ciclo</div>
+        <div>Ciclo Escolar</div>
         <div></div>
       </TableHeader>
       {semesters.map((semester) => (

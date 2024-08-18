@@ -1,17 +1,12 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import {
-  HiAcademicCap,
-  HiBookOpen,
-  HiOutlineCalendarDays,
-  HiOutlineCog6Tooth,
-  HiOutlineHome,
-  HiOutlineHomeModern,
-  HiOutlineUsers,
-} from "react-icons/hi2";
+import { HiAcademicCap, HiBookOpen, HiOutlineUsers } from "react-icons/hi2";
 import { useState } from "react";
 import { IoIosArrowDropdownCircle, IoIosArrowDropright } from "react-icons/io";
 import { FaCalendar } from "react-icons/fa";
+import { MdLibraryBooks } from "react-icons/md";
+import { FaUserGear } from "react-icons/fa6";
+import { RiGovernmentFill } from "react-icons/ri";
 
 const NavList = styled.ul`
   display: flex;
@@ -95,12 +90,6 @@ function MainNav() {
       {isOpen && (
         <NavList>
           <li>
-            <StyledNavLink to="/dashboard">
-              <HiOutlineHome />
-              <span>Home</span>
-            </StyledNavLink>
-          </li>
-          <li>
             <StyledNavLink to="/degrees">
               <HiAcademicCap />
               <span>Licenciaturas</span>
@@ -119,20 +108,20 @@ function MainNav() {
             </StyledNavLink>
           </li>
           <li>
-            <StyledNavLink to="/settings">
-              <HiOutlineCog6Tooth />
+            <StyledNavLink to="/study-programs">
+              <MdLibraryBooks />
               <span>Programas de estudio</span>
             </StyledNavLink>
           </li>
           <li>
-            <StyledNavLink to="/settings">
-              <HiOutlineCog6Tooth />
+            <StyledNavLink to="/roles">
+              <FaUserGear />
               <span>Roles</span>
             </StyledNavLink>
           </li>
           <li>
-            <StyledNavLink to="/settings">
-              <HiOutlineCog6Tooth />
+            <StyledNavLink to="/state-roles">
+              <RiGovernmentFill />
               <span>Roles Estatales</span>
             </StyledNavLink>
           </li>

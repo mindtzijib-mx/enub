@@ -10,6 +10,7 @@ import Subjects from "./pages/Records/Subjects";
 import Groups from "./pages/Records/Groups";
 import { Toaster } from "react-hot-toast";
 import Semesters from "./pages/Semesters";
+import ScheduleDashboard from "./pages/ScheduleDashboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,6 +35,7 @@ function App() {
               <Route path="subjects" element={<Subjects />} />
               <Route path="groups" element={<Groups />} />
               <Route path="semesters" element={<Semesters />} />
+              <Route path="semesters/:id" element={<ScheduleDashboard />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
           </Routes>
