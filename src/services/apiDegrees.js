@@ -5,7 +5,7 @@ export async function getDegrees() {
 
   if (error) {
     console.error(error);
-    throw new Error("Las licenciaturas no pudieron cargarse");
+    throw new Error("Las licenciaturas no se pudieron cargar");
   }
 
   return data;

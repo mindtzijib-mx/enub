@@ -9,11 +9,36 @@ import {
   HiOutlineHomeModern,
   HiOutlineUsers,
 } from "react-icons/hi2";
+import { useState } from "react";
+import { IoIosArrowDropdownCircle, IoIosArrowDropright } from "react-icons/io";
+import { FaCalendar } from "react-icons/fa";
 
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+`;
+
+const NavLinkHeader = styled.h2`
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+
+  color: var(--color-grey-800);
+  font-size: 1.8rem;
+  font-weight: 600;
+  padding: 1.2rem 2.4rem;
+  transition: all 0.3s;
+
+  &:hover,
+  &:active,
+  &.active:link,
+  &.active:visited {
+    cursor: pointer;
+    color: var(--color-grey-800);
+    background-color: var(--color-grey-50);
+    border-radius: var(--border-radius-sm);
+  }
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -56,40 +81,69 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function MainNav() {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <nav>
-      <NavList>
-        <li>
-          <StyledNavLink to="/dashboard">
-            <HiOutlineHome />
-            <span>Home</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/degrees">
-            <HiAcademicCap />
-            <span>Licenciaturas</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/subjects">
-            <HiBookOpen />
-            <span>Asignaturas</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/groups">
-            <HiOutlineUsers />
-            <span>Grupos Escolares</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/settings">
-            <HiOutlineCog6Tooth />
-            <span>Settings</span>
-          </StyledNavLink>
-        </li>
-      </NavList>
+      <NavLinkHeader onClick={() => setIsOpen(!isOpen)}>
+        <span>Administrar registros</span>
+        {isOpen ? (
+          <IoIosArrowDropdownCircle size={48} />
+        ) : (
+          <IoIosArrowDropright size={48} />
+        )}
+      </NavLinkHeader>
+      {isOpen && (
+        <NavList>
+          <li>
+            <StyledNavLink to="/dashboard">
+              <HiOutlineHome />
+              <span>Home</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/degrees">
+              <HiAcademicCap />
+              <span>Licenciaturas</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/subjects">
+              <HiBookOpen />
+              <span>Asignaturas</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/groups">
+              <HiOutlineUsers />
+              <span>Grupos Escolares</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/settings">
+              <HiOutlineCog6Tooth />
+              <span>Programas de estudio</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/settings">
+              <HiOutlineCog6Tooth />
+              <span>Roles</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/settings">
+              <HiOutlineCog6Tooth />
+              <span>Roles Estatales</span>
+            </StyledNavLink>
+          </li>
+        </NavList>
+      )}
+      <NavLink to="/semesters">
+        <NavLinkHeader>
+          <span>Administrar horarios</span>
+          <FaCalendar size={26} />
+        </NavLinkHeader>
+      </NavLink>
     </nav>
   );
 }

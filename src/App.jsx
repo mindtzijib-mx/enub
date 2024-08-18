@@ -8,12 +8,14 @@ import Degrees from "./pages/Records/Degrees";
 import AppLayout from "./ui/AppLayout";
 import Subjects from "./pages/Records/Subjects";
 import Groups from "./pages/Records/Groups";
+import { Toaster } from "react-hot-toast";
+import Semesters from "./pages/Semesters";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // staleTime: 60 * 1000,
-      staleTime: 0,
+      staleTime: 60 * 1000,
+      // staleTime: 0,
     },
   },
 });
@@ -31,10 +33,32 @@ function App() {
               <Route path="degrees" element={<Degrees />} />
               <Route path="subjects" element={<Subjects />} />
               <Route path="groups" element={<Groups />} />
+              <Route path="semesters" element={<Semesters />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
           </Routes>
         </BrowserRouter>
+
+        <Toaster
+          position="top-center"
+          gutter={12}
+          containerStyle={{ margin: "8px" }}
+          toastOptions={{
+            success: {
+              duration: 3000,
+            },
+            error: {
+              duration: 5000,
+            },
+            style: {
+              fontSize: "16px",
+              maxWidth: "500px",
+              padding: "16px 24px",
+              backgroundColor: "var(--color-grey-0)",
+              color: "var(--color-grey-700)",
+            },
+          }}
+        />
       </QueryClientProvider>
     </>
   );
