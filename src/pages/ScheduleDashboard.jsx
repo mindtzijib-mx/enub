@@ -7,17 +7,33 @@ import Spinner from "../ui/Spinner";
 import { useSubjects } from "../features/subjects/useSubjects";
 import { useGroups } from "../features/groups/useGroups";
 import { useParams } from "react-router-dom";
+import { useScheduleAssignments } from "../features/schedules/useScheduleAssignments";
+import calculateSemesterGroup from "../helpers/calculateSemesterGroup";
+import TeacherSchedule from "../features/schedules/TeacherSchedule";
 
 function ScheduleDashboard() {
   const { id } = useParams();
   const [showScholarSchedule, setShowScholarSchedule] = useState(false);
+  const [showTeacherSchedule, setShowTeacherSchedule] = useState(false);
 
   const { isLoading: isLoadingWorkers, workers } = useWorkers();
   const { isLoading: isLoadingSubjects, subjects } = useSubjects();
   const { isLoading: isLoadingGroups, groups } = useGroups();
+  const { isLoading: isLoadingScheduleAssignments, scheduleAssignments } =
+    useScheduleAssignments();
 
-  if (isLoadingWorkers || isLoadingSubjects || isLoadingGroups)
+  if (
+    isLoadingWorkers ||
+    isLoadingSubjects ||
+    isLoadingGroups ||
+    isLoadingScheduleAssignments
+  )
     return <Spinner />;
+
+  const currentGroups = groups.filter((group) => {
+    // if the group is below eight semester
+    return calculateSemesterGroup(group.year_of_admission) <= 8;
+  });
 
   return (
     <Row>
@@ -25,7 +41,9 @@ function ScheduleDashboard() {
         <Button onClick={() => setShowScholarSchedule(!showScholarSchedule)}>
           Gestionar horario escolar
         </Button>
-        <Button>Gestionar horario del maestro</Button>
+        <Button onClick={() => setShowTeacherSchedule(!showTeacherSchedule)}>
+          Gestionar horario del maestro
+        </Button>
         <Button>Imprimir plantilla horaria</Button>
       </Row>
       <Row>
@@ -33,9 +51,13 @@ function ScheduleDashboard() {
           <ScholarSchedule
             workers={workers}
             subjects={subjects}
-            groups={groups}
+            groups={currentGroups}
             semesterId={id}
+            scheduleAssignments={scheduleAssignments}
           />
+        )}
+        {showTeacherSchedule && (
+          <TeacherSchedule workers={workers} semesterId={id} />
         )}
       </Row>
     </Row>

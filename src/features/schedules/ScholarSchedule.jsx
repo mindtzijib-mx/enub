@@ -2,9 +2,17 @@ import { useState } from "react";
 import Button from "../../ui/Button";
 import Row from "../../ui/Row";
 import CreateScholarSchedule from "./CreateScholarSchedule";
+import ShowScholarSchedule from "./ShowScholarSchedule";
 
-function ScholarSchedule({ workers, subjects, groups, semesterId }) {
+function ScholarSchedule({
+  workers,
+  subjects,
+  groups,
+  semesterId,
+  scheduleAssignments,
+}) {
   const [showAddSchedule, setShowAddSchedule] = useState(false);
+  const [showScheduleGroup, setShowScheduleGroup] = useState(false);
 
   return (
     <Row>
@@ -12,7 +20,9 @@ function ScholarSchedule({ workers, subjects, groups, semesterId }) {
         <Button onClick={() => setShowAddSchedule(!showAddSchedule)}>
           Agregar horario escolar
         </Button>
-        <Button>Ver horarios del grupo</Button>
+        <Button onClick={() => setShowScheduleGroup(!showScheduleGroup)}>
+          Ver horarios del grupo
+        </Button>
       </Row>
       {showAddSchedule && (
         <CreateScholarSchedule
@@ -20,6 +30,12 @@ function ScholarSchedule({ workers, subjects, groups, semesterId }) {
           subjects={subjects}
           groups={groups}
           semesterId={semesterId}
+        />
+      )}
+      {showScheduleGroup && (
+        <ShowScholarSchedule
+          scheduleAssignments={scheduleAssignments}
+          groups={groups}
         />
       )}
     </Row>
