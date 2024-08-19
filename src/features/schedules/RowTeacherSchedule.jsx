@@ -25,8 +25,6 @@ const LongRow = styled.div`
 `;
 
 function RowTeacherSchedule({ schedulesScholar, scheduleTeacher }) {
-  console.log(schedulesScholar, scheduleTeacher);
-
   return (
     <>
       <TableRow role="row">

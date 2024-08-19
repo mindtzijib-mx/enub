@@ -39,6 +39,18 @@ function ScheduleDashboard() {
     return calculateSemesterGroup(group.year_of_admission) <= 8;
   });
 
+  const scheduleAssignmentsBySemester = scheduleAssignments.filter(
+    (schedule) => {
+      return schedule.semester_id === +id;
+    }
+  );
+
+  const scheduleTeachersBySemester = scheduleTeachers.filter((schedule) => {
+    return schedule.semester_id === +id;
+  });
+
+  console.log(scheduleTeachers, scheduleTeachersBySemester);
+
   return (
     <Row>
       <Row type="horizontal">
@@ -57,15 +69,15 @@ function ScheduleDashboard() {
             subjects={subjects}
             groups={currentGroups}
             semesterId={id}
-            scheduleAssignments={scheduleAssignments}
+            scheduleAssignments={scheduleAssignmentsBySemester}
           />
         )}
         {showTeacherSchedule && (
           <TeacherSchedule
             workers={workers}
             semesterId={id}
-            scheduleTeachers={scheduleTeachers}
-            scheduleAssignments={scheduleAssignments}
+            scheduleTeachers={scheduleTeachersBySemester}
+            scheduleAssignments={scheduleAssignmentsBySemester}
           />
         )}
       </Row>

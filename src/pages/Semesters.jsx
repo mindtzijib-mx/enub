@@ -11,16 +11,14 @@ function Semesters() {
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">
-          Cree o seleccione un semestre para gestionar el horario
-        </Heading>
-      </Row>
-      <Row>
-        <SemesterTable />
+        <Heading as="h1">Semestres Escolares</Heading>
         <Button onClick={() => setShowForm((show) => !show)}>
           Agregar semestre
         </Button>
-        {showForm && <CreateSemesterForm />}
+      </Row>
+      {showForm && <CreateSemesterForm />}
+      <Row>
+        <SemesterTable />
       </Row>
     </>
   );
