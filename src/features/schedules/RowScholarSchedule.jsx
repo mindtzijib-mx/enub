@@ -24,16 +24,6 @@ const LongRow = styled.div`
 `;
 
 function RowScholarSchedule({ schedules }) {
-  const L1 = schedules.filter((schedule) => {
-    return schedule.weekday === "Lunes" && schedule.start_time === "09:20:00";
-  });
-  const L2 = schedules.filter((schedule) => {
-    return schedule.weekday === "Lunes" && schedule.start_time === "11:10:00";
-  });
-  const L3 = schedules.filter((schedule) => {
-    return schedule.weekday === "Lunes" && schedule.start_time === "13:10:00";
-  });
-
   return (
     <>
       <TableRow role="row">

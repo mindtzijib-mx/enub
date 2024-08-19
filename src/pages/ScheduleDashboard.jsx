@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { useScheduleAssignments } from "../features/schedules/useScheduleAssignments";
 import calculateSemesterGroup from "../helpers/calculateSemesterGroup";
 import TeacherSchedule from "../features/schedules/TeacherSchedule";
+import { useScheduleTeachers } from "../features/schedules/useScheduleTeachers";
 
 function ScheduleDashboard() {
   const { id } = useParams();
@@ -21,12 +22,15 @@ function ScheduleDashboard() {
   const { isLoading: isLoadingGroups, groups } = useGroups();
   const { isLoading: isLoadingScheduleAssignments, scheduleAssignments } =
     useScheduleAssignments();
+  const { isLoading: isLoadingScheduleTeachers, scheduleTeachers } =
+    useScheduleTeachers();
 
   if (
     isLoadingWorkers ||
     isLoadingSubjects ||
     isLoadingGroups ||
-    isLoadingScheduleAssignments
+    isLoadingScheduleAssignments ||
+    isLoadingScheduleTeachers
   )
     return <Spinner />;
 
@@ -57,7 +61,12 @@ function ScheduleDashboard() {
           />
         )}
         {showTeacherSchedule && (
-          <TeacherSchedule workers={workers} semesterId={id} />
+          <TeacherSchedule
+            workers={workers}
+            semesterId={id}
+            scheduleTeachers={scheduleTeachers}
+            scheduleAssignments={scheduleAssignments}
+          />
         )}
       </Row>
     </Row>

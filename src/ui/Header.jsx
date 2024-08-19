@@ -7,7 +7,7 @@ const StyledHeader = styled.header`
 `;
 
 function Header() {
-  return <StyledHeader>HEADER</StyledHeader>;
+  return <StyledHeader>SISTEMA ENUB</StyledHeader>;
 }
 
 export default Header;

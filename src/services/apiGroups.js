@@ -10,3 +10,14 @@ export async function getGroups() {
 
   return data;
 }
+
+export async function createGroup(newGroup) {
+  const { data, error } = await supabase.from("groups").insert([newGroup]);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Hubo un error al crear el registro");
+  }
+
+  return data;
+}
