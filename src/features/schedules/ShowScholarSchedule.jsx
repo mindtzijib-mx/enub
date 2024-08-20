@@ -4,6 +4,7 @@ import RowScholarSchedule from "./RowScholarSchedule";
 import Select from "../../ui/Select";
 import calculateSemesterGroup from "../../helpers/calculateSemesterGroup";
 import { useState } from "react";
+import ScheduleGroupPDF from "../../pdf/ScheduleGroup/ScheduleGroupPDF";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -62,6 +63,7 @@ function ShowScholarSchedule({ scheduleAssignments, groups }) {
           <RowScholarSchedule schedules={filteredSchedules} />
         )}
       </Table>
+      <ScheduleGroupPDF schedules={filteredSchedules} />
     </>
   );
 }
