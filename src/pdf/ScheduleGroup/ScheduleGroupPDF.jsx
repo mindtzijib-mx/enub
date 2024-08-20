@@ -1,5 +1,5 @@
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+/* import jsPDF from "jspdf"; */
+/* import autoTable from "jspdf-autotable"; */
 import "../../styles/Montserrat-Regular-normal";
 import "../../styles/Montserrat-Italic-italic";
 import "../../styles/Montserrat-Bold-bold";
@@ -8,10 +8,8 @@ import Button from "../../ui/Button";
 import filterHour from "./FilterHour";
 
 function ScheduleGroupPDF({ schedules }) {
-  const generatePDF = () => {
+  /* const generatePDF = () => {
     const doc = new jsPDF();
-
-    const options = {};
 
     const infoGroup = [
       ["ESCUELA: NORMAL URBANA", `PERIODO ESCOLAR: <>`],
@@ -101,10 +99,10 @@ function ScheduleGroupPDF({ schedules }) {
     console.log(doc.getFontList());
   };
 
-  console.log(schedules);
+  console.log(schedules); */
 
   return (
-    <Button variation="secondary" onClick={generatePDF}>
+    <Button variation="secondary" /* onClick={generatePDF} */>
       Generar horario grupal
     </Button>
   );
