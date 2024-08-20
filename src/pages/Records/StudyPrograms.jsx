@@ -1,7 +1,5 @@
-import React from "react";
-
 function StudyPrograms() {
-  return <div>Anything</div>;
+  return <div>Anyway</div>;
 }
 
 export default StudyPrograms;

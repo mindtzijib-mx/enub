@@ -4,8 +4,8 @@ import calculateSemesterGroup from "../../helpers/calculateSemesterGroup";
 import { useState } from "react";
 import Modal from "../../ui/Modal";
 import CreateScholarSchedule from "./EditScholarSchedule";
-import { useDeleteScheduleAssignment } from "./useDeleteScheduleAssignment";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import { useDeleteScheduleAssignment } from "./useDeleteScheduleAssignment";
 
 function HourScheduleSubjectGroup({ schedules, weekday, startTime }) {
   const { isDeleting, deleteScheduleAssignment } =

@@ -4,9 +4,9 @@ import {
   Text,
   View,
   StyleSheet,
-  Font,
   PDFViewer,
 } from "@react-pdf/renderer";
+import TableScheduleGroup from "./TableScheduleGroup";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -23,22 +23,12 @@ const styles = StyleSheet.create({
   },
 });
 
-// Create Document Component
-function Example() {
+function ScheduleGroupPDF() {
   return (
     <PDFViewer style={styles.viewer}>
-      {/* Start of the document*/}
-      <Document>
-        <Page size="A4" style={styles.page}>
-          <View style={styles.section}>
-            <Text>Section #1</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>Section #2</Text>
-          </View>
-        </Page>
-      </Document>
+      <TableScheduleGroup />
     </PDFViewer>
   );
 }
-export default Example;
+
+export default ScheduleGroupPDF;

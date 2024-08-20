@@ -59,6 +59,8 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
   const [filteredSchedulesAssignments, setFilteredSchedulesAssignments] =
     useState([]);
 
+  let totalHours = 4;
+
   function selectingWorker(workerId) {
     const scheduleTeacherFilter = scheduleTeachers.filter((schedule) => {
       return schedule.worker_id === +workerId;
@@ -130,6 +132,19 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
 
   // console.log(countTeacherSchedules, uniqueTeacherSchedule);
 
+  // Sumar horas de asignaturas impartidas
+
+  Object.keys(groupedSubjects).map(
+    (subject) =>
+      (totalHours +=
+        Object.keys(groupData(groupedSubjects[subject], "group_id")).length *
+        (groupedSubjects[subject].length * 2))
+  );
+
+  uniqueTeacherSchedule.map(
+    (schedule) => (totalHours += schedule.quantity * 2)
+  );
+
   return (
     <>
       <Select id="worker_id" onChange={(e) => selectingWorker(e.target.value)}>
@@ -158,7 +173,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
                 (group) => (
                   <>
                     <span key={group}>
-                      [
+                      (
                       {calculateSemesterGroup(
                         groupData(groupedSubjects[subject], "group_id")[
                           group
@@ -170,15 +185,19 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
                           group
                         ][0].groups.letter
                       }
-                      ]
+                      ) &nbsp; &nbsp; &nbsp;
                     </span>
                   </>
                 )
               )}
             </p>
+            <p>{groupedSubjects[subject].length * 2}</p>
             <p></p>
-            <p></p>
-            <p>1</p>
+            <p>
+              {Object.keys(groupData(groupedSubjects[subject], "group_id"))
+                .length *
+                (groupedSubjects[subject].length * 2)}
+            </p>
           </TableRow>
         ))}
         {uniqueTeacherSchedule.map((schedule) => (
@@ -215,7 +234,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
           <p></p>
           <p></p>
           <p></p>
-          <p>0 hrs</p>
+          <p>{totalHours} hrs</p>
         </TableRow>
       </Table>
     </>
