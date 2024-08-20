@@ -49,20 +49,12 @@ function ScheduleDashboard() {
     return schedule.semester_id === +id;
   });
 
-  console.log(scheduleTeachers, scheduleTeachersBySemester);
-
   return (
     <Row>
-      <Row type="horizontal">
+      <Row>
         <Button onClick={() => setShowScholarSchedule(!showScholarSchedule)}>
           Gestionar horario escolar
         </Button>
-        <Button onClick={() => setShowTeacherSchedule(!showTeacherSchedule)}>
-          Gestionar horario del maestro
-        </Button>
-        <Button>Imprimir plantilla horaria</Button>
-      </Row>
-      <Row>
         {showScholarSchedule && (
           <ScholarSchedule
             workers={workers}
@@ -72,6 +64,9 @@ function ScheduleDashboard() {
             scheduleAssignments={scheduleAssignmentsBySemester}
           />
         )}
+        <Button onClick={() => setShowTeacherSchedule(!showTeacherSchedule)}>
+          Gestionar horario del maestro
+        </Button>
         {showTeacherSchedule && (
           <TeacherSchedule
             workers={workers}
@@ -80,6 +75,7 @@ function ScheduleDashboard() {
             scheduleAssignments={scheduleAssignmentsBySemester}
           />
         )}
+        <Button>Imprimir plantilla horaria</Button>
       </Row>
     </Row>
   );

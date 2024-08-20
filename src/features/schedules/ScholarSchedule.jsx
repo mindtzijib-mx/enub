@@ -16,14 +16,12 @@ function ScholarSchedule({
 
   return (
     <Row>
-      <Row type="horizontal">
-        <Button onClick={() => setShowAddSchedule(!showAddSchedule)}>
-          Agregar horario escolar
-        </Button>
-        <Button onClick={() => setShowScheduleGroup(!showScheduleGroup)}>
-          Ver horarios del grupo
-        </Button>
-      </Row>
+      <Button
+        variation="secondary"
+        onClick={() => setShowAddSchedule(!showAddSchedule)}
+      >
+        Agregar horario escolar
+      </Button>
       {showAddSchedule && (
         <CreateScholarSchedule
           workers={workers}
@@ -32,6 +30,12 @@ function ScholarSchedule({
           semesterId={semesterId}
         />
       )}
+      <Button
+        variation="secondary"
+        onClick={() => setShowScheduleGroup(!showScheduleGroup)}
+      >
+        Ver horarios del grupo
+      </Button>
       {showScheduleGroup && (
         <ShowScholarSchedule
           scheduleAssignments={scheduleAssignments}
