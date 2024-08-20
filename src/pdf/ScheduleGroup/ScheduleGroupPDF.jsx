@@ -57,8 +57,8 @@ function ScheduleGroupPDF({ schedules }) {
         filterHour(schedules, "Miercoles", "13:10:00"),
         filterHour(schedules, "Jueves", "13:10:00"),
         filterHour(schedules, "Viernes", "13:10:00"),
-      ],
-    ]; */
+      ],*/
+    ];
 
     doc.autoTable({
       styles: {
