@@ -5,7 +5,7 @@ import "../../styles/Montserrat-Italic-italic";
 import "../../styles/Montserrat-Bold-bold";
 import "../../styles/Montserrat-BoldItalic-bolditalic";
 import Button from "../../ui/Button";
-import filterHour from "./FilterHour";
+/* import filterHour from "./FilterHour"; */
 
 function ScheduleGroupPDF({ schedules }) {
   /* const generatePDF = () => {
