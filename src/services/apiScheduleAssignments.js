@@ -25,3 +25,17 @@ export async function createScheduleAssignments(newScheduleAssignment) {
 
   return data;
 }
+
+export async function deleteScheduleAssignment(id) {
+  const { data, error } = await supabase
+    .from("schedule_assignments")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Hubo un error al eleminar el registro");
+  }
+
+  return data;
+}

@@ -17,43 +17,38 @@ function TeacherSchedule({
 
   return (
     <Row>
-      <Row>
-        <Button
-          variation="secondary"
-          onClick={() => setShowCreate(!showCreate)}
-        >
-          Agregar horario de actividades del maestro
-        </Button>
-        {showCreate && (
-          <CreateTeacherSchedule workers={workers} semesterId={semesterId} />
-        )}
-        <Button
-          variation="secondary"
-          onClick={() => setShowScheduleTeacher(!showScheduleTeacher)}
-        >
-          Ver horarios del maestro
-        </Button>
-        {showScheduleTeacher && (
-          <ShowTeacherSchedule
-            workers={workers}
-            scheduleTeachers={scheduleTeachers}
-            scheduleAssignments={scheduleAssignments}
-          />
-        )}
-        <Button
-          variation="secondary"
-          onClick={() => setShowAssignmentTeacher(!showAssignmentTeacher)}
-        >
-          Ver asignación horaria
-        </Button>
-        {showAssignmentTeacher && (
-          <TeacherAssignment
-            workers={workers}
-            scheduleTeachers={scheduleTeachers}
-            scheduleAssignments={scheduleAssignments}
-          />
-        )}
-      </Row>
+      <Button variation="secondary" onClick={() => setShowCreate(!showCreate)}>
+        Agregar horario de actividades del maestro
+      </Button>
+      {showCreate && (
+        <CreateTeacherSchedule workers={workers} semesterId={semesterId} />
+      )}
+      <Button
+        variation="secondary"
+        onClick={() => setShowScheduleTeacher(!showScheduleTeacher)}
+      >
+        Ver horarios del maestro
+      </Button>
+      {showScheduleTeacher && (
+        <ShowTeacherSchedule
+          workers={workers}
+          scheduleTeachers={scheduleTeachers}
+          scheduleAssignments={scheduleAssignments}
+        />
+      )}
+      <Button
+        variation="secondary"
+        onClick={() => setShowAssignmentTeacher(!showAssignmentTeacher)}
+      >
+        Ver asignación horaria
+      </Button>
+      {showAssignmentTeacher && (
+        <TeacherAssignment
+          workers={workers}
+          scheduleTeachers={scheduleTeachers}
+          scheduleAssignments={scheduleAssignments}
+        />
+      )}
     </Row>
   );
 }

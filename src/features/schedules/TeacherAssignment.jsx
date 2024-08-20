@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Select from "../../ui/Select";
 import styled from "styled-components";
+import calculateSemesterGroup from "../../helpers/calculateSemesterGroup";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -152,7 +153,29 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
           <TableRow key={subject}>
             <p>{groupedSubjects[subject][0].subjects.name}</p>
             <p>{groupedSubjects[subject][0].groups.degrees.code}</p>
-            <p></p>
+            <p>
+              {Object.keys(groupData(groupedSubjects[subject], "group_id")).map(
+                (group) => (
+                  <>
+                    <span key={group}>
+                      [
+                      {calculateSemesterGroup(
+                        groupData(groupedSubjects[subject], "group_id")[
+                          group
+                        ][0].groups.year_of_admission
+                      )}
+                      ° "
+                      {
+                        groupData(groupedSubjects[subject], "group_id")[
+                          group
+                        ][0].groups.letter
+                      }
+                      ]
+                    </span>
+                  </>
+                )
+              )}
+            </p>
             <p></p>
             <p></p>
             <p>1</p>
