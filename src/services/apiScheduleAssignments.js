@@ -3,7 +3,7 @@ import supabase from "./supabase";
 export async function getScheduleAssignments() {
   const { data, error } = await supabase
     .from("schedule_assignments")
-    .select("*, workers(*), subjects(*), groups(*, degrees(*))");
+    .select("*, workers(*), subjects(*), groups(*, degrees(*)), semesters(*)");
 
   if (error) {
     console.error(error);

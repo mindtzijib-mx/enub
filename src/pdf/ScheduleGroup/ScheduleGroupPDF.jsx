@@ -9,17 +9,28 @@ import { useRoles } from "../../features/roles/useRoles.js";
 import { useStateRoles } from "../../features/stateRoles/useStateRoles.js";
 import Spinner from "../../ui/Spinner.jsx";
 import filterHour from "./filterHour.js";
+import calculateSemesterGroup from "../../helpers/calculateSemesterGroup.js";
+import logoEnub from "../enub.jpg";
 
 function ScheduleGroupPDF({ schedules }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
   const { isLoading: isLoadingStateRoles, stateRoles } = useStateRoles();
 
   const generatePDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF("p", "px", "letter");
 
     const infoGroup = [
-      ["ESCUELA: NORMAL URBANA", `PERIODO ESCOLAR: <>`],
-      [`LIC LEPRI`, `PLAN: 2022`],
+      [
+        "ESCUELA NORMAL URBANA",
+        `PERIODO ESCOLAR: ${schedules[0].semesters.school_year}`,
+      ],
+      [schedules[0].groups.degrees.name.toUpperCase(), `PLAN: 2022`],
+      [
+        `SEMESTRE: ${calculateSemesterGroup(
+          schedules[0].groups.year_of_admission
+        )}°    GRUPO: ${schedules[0].groups.letter}`,
+        `TURNO: MATUTINO`,
+      ],
     ];
 
     const columns = ["", "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES"];
@@ -68,14 +79,61 @@ function ScheduleGroupPDF({ schedules }) {
 
     // Header
 
+    const logoEnub = new Image();
+    logoEnub.src = "/enub.jpg";
+    doc.addImage(logoEnub, "JPG", 380, 10, 50, 50);
+
+    const logoSetab = new Image();
+    logoSetab.src = "/setab.jpeg";
+    doc.addImage(logoSetab, "JPEG", 30, 5, 60, 60);
+
     doc.autoTable({
-      styles: {
-        halign: "center",
-        font: "Montserrat-Bold",
-        fontStyle: "bold",
+      willDrawPage: function (data) {
+        // Header
+        doc.autoTable({
+          styles: {
+            halign: "center",
+            font: "Montserrat-BoldItalic",
+            fontStyle: "bolditalic",
+          },
+          body: [["", "APRENDER PARA ENSEÑAR", ""]],
+          theme: "plain",
+        });
       },
-      body: [["a", "APRENDER PARA ENSEÑAR", ""]],
-      theme: "plain",
+      didDrawPage: function (data) {
+        // Footer
+        doc.setFontSize(10);
+
+        // jsPDF 1.4+ uses getHeight, <1.4 uses .height
+        var pageSize = doc.internal.pageSize;
+        var pageHeight = pageSize.height
+          ? pageSize.height
+          : pageSize.getHeight();
+
+        doc.setFont("Montserrat-Regular");
+        doc.text("Periférico S/N", data.settings.margin.left, pageHeight - 60);
+        doc.text(
+          "Col. Las Flores. CP. 86930",
+          data.settings.margin.left,
+          pageHeight - 50
+        );
+        doc.text(
+          "Teléfono (934) 344 04 77, 344 04 88",
+          data.settings.margin.left,
+          pageHeight - 40
+        );
+        doc.text(
+          "Balancán, Tabasco",
+          data.settings.margin.left,
+          pageHeight - 30
+        );
+        doc.text(
+          "escuela.normalurbana@correo.setab.gob.mx",
+          data.settings.margin.left,
+          pageHeight - 20
+        );
+      },
+      margin: { top: 50 },
     });
 
     // Information about groups
@@ -83,7 +141,8 @@ function ScheduleGroupPDF({ schedules }) {
     doc.autoTable({
       styles: {
         valign: "middle",
-        font: "Montserrat-Regular",
+        font: "Montserrat-Bold",
+        fontSize: 9,
       },
       body: infoGroup,
       theme: "plain",
@@ -103,15 +162,19 @@ function ScheduleGroupPDF({ schedules }) {
         font: "Montserrat-Bold",
       },
       columnStyles: {
-        0: { cellWidth: 25 },
+        0: { cellWidth: 50 },
       },
       head: [columns],
       body: data,
       theme: "grid",
     });
 
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("es-ES", options);
+
     const infoSchool = [
-      ["", "", "Balancán, Tabasco a 19 de August del 2024"],
+      ["", "", `Balancán, Tabasco a ${formattedDate}`],
       [
         {
           content: "Encargado De Despacho De La Dirección De La Escuela",
@@ -155,24 +218,10 @@ function ScheduleGroupPDF({ schedules }) {
       theme: "plain",
     });
 
-    const infoFooter = [
-      ["Col. Las Flores. CP. 86930"],
-      ["Teléfono (934) 344 04 77, 344 04 88"],
-      ["Balancán, Tabasco"],
-      ["escuela.normalurbana@correo.setab.gob.mx"],
-    ];
-
-    doc.autoTable({
-      styles: {
-        font: "Montserrat-Regular",
-        fontSize: 9,
-      },
-      body: infoFooter,
-      theme: "plain",
-    });
-
     doc.output("dataurlnewwindow");
   };
+
+  console.log(schedules);
 
   if (isLoadingRoles || isLoadingStateRoles) return <Spinner />;
 
