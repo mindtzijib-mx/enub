@@ -4,7 +4,9 @@ function filterHour(schedules, weekday, startTime) {
   });
 
   if (subjectHour.length > 0) {
-    const textSchedule = `${subjectHour[0].subjects.name}`;
+    const textSchedule = `${subjectHour[0].subjects.name}
+
+${subjectHour[0].workers.name}`;
     return textSchedule;
   }
 

@@ -97,17 +97,6 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
 
   const groupedSubjects = groupData(filteredSchedulesAssignments, "subject_id");
 
-  /*const countSubjects = filteredSchedulesAssignments.reduce((acc, item) => {
-    if (acc[item.subject_id]) {
-      acc[item.subject_id]++;
-    } else {
-      acc[item.subject_id] = 1;
-    }
-    return acc;
-  }, {});
-
-  const uniqueSubjects = Object.keys(countSubjects); */
-
   console.log(groupedSubjects);
 
   // Extract Teacher Schedules
@@ -135,10 +124,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
   // Sumar horas de asignaturas impartidas
 
   Object.keys(groupedSubjects).map(
-    (subject) =>
-      (totalHours +=
-        Object.keys(groupData(groupedSubjects[subject], "group_id")).length *
-        (groupedSubjects[subject].length * 2))
+    (subject) => (totalHours += groupedSubjects[subject].length * 2)
   );
 
   uniqueTeacherSchedule.map(
@@ -193,11 +179,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
             </p>
             <p>{groupedSubjects[subject].length * 2}</p>
             <p></p>
-            <p>
-              {Object.keys(groupData(groupedSubjects[subject], "group_id"))
-                .length *
-                (groupedSubjects[subject].length * 2)}
-            </p>
+            <p>{groupedSubjects[subject].length * 2}</p>
           </TableRow>
         ))}
         {uniqueTeacherSchedule.map((schedule) => (
