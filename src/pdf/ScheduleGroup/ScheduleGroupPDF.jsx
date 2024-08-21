@@ -5,10 +5,10 @@ import "../../styles/Montserrat-Italic-italic";
 import "../../styles/Montserrat-Bold-bold";
 import "../../styles/Montserrat-BoldItalic-bolditalic";
 import Button from "../../ui/Button";
-import filterHour from "./FilterHour.js";
 import { useRoles } from "../../features/roles/useRoles.js";
 import { useStateRoles } from "../../features/stateRoles/useStateRoles.js";
 import Spinner from "../../ui/Spinner.jsx";
+import filterHour from "./FilterHour.js";
 
 function ScheduleGroupPDF({ schedules }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
