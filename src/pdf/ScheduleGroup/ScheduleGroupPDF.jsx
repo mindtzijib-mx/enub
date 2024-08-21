@@ -8,7 +8,7 @@ import Button from "../../ui/Button";
 import { useRoles } from "../../features/roles/useRoles.js";
 import { useStateRoles } from "../../features/stateRoles/useStateRoles.js";
 import Spinner from "../../ui/Spinner.jsx";
-import filterHour from "./FilterHour.js";
+import filterHour from "./filterHour.js";
 
 function ScheduleGroupPDF({ schedules }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
