@@ -5,7 +5,7 @@ import "../../styles/Montserrat-Italic-italic";
 import "../../styles/Montserrat-Bold-bold";
 import "../../styles/Montserrat-BoldItalic-bolditalic";
 import Button from "../../ui/Button";
-/* import filterHour from "./FilterHour"; */
+import filterHour from "./filterHour.js";
 
 function ScheduleGroupPDF({ schedules }) {
   const generatePDF = () => {
@@ -18,7 +18,7 @@ function ScheduleGroupPDF({ schedules }) {
 
     const columns = ["", "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES"];
     const data = [
-      /* [
+      [
         "7:00 - 8:50",
         "Homenaje / Tutoria",
         filterHour(schedules, "Martes", "07:00:00"),
@@ -57,7 +57,7 @@ function ScheduleGroupPDF({ schedules }) {
         filterHour(schedules, "Miercoles", "13:10:00"),
         filterHour(schedules, "Jueves", "13:10:00"),
         filterHour(schedules, "Viernes", "13:10:00"),
-      ],*/
+      ],
     ];
 
     doc.autoTable({
