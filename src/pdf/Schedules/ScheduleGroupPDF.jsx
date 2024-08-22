@@ -1,10 +1,10 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import "../../styles/Montserrat-Regular-normal";
-import "../../styles/Montserrat-Italic-italic";
-import "../../styles/Montserrat-Bold-bold";
-import "../../styles/Montserrat-BoldItalic-bolditalic";
-import Button from "../../ui/Button";
+import "../../styles/Montserrat-Regular-normal.js";
+import "../../styles/Montserrat-Italic-italic.js";
+import "../../styles/Montserrat-Bold-bold.js";
+import "../../styles/Montserrat-BoldItalic-bolditalic.js";
+import Button from "../../ui/Button.jsx";
 import { useRoles } from "../../features/roles/useRoles.js";
 import { useStateRoles } from "../../features/stateRoles/useStateRoles.js";
 import Spinner from "../../ui/Spinner.jsx";

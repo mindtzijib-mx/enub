@@ -1,11 +1,5 @@
-import ScheduleGroupPDF from "../../pdf/ScheduleGroup/ScheduleGroupPDF";
-
 function StudyPrograms() {
-  return (
-    <div>
-      <ScheduleGroupPDF />
-    </div>
-  );
+  return <div>anything</div>;
 }
 
 export default StudyPrograms;

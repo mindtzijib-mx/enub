@@ -4,6 +4,7 @@ import Select from "../../ui/Select";
 import calculateSemesterGroup from "../../helpers/calculateSemesterGroup";
 import { useState } from "react";
 import RowTeacherSchedule from "./RowTeacherSchedule";
+import ScheduleTeacherPDF from "../../pdf/Schedules/ScheduleTeacherPDF";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -81,6 +82,12 @@ function ShowTeacherSchedule({
           />
         )}
       </Table>
+      {recordExist && (
+        <ScheduleTeacherPDF
+          schedulesScholar={filteredSchedulesAssignments}
+          scheduleTeacher={filteredSchedulesTeacher}
+        />
+      )}
     </>
   );
 }
