@@ -15,7 +15,28 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
   const { isLoading: isLoadingStateRoles, stateRoles } = useStateRoles();
 
+  let numberLEPRIM = 0,
+    numberLEPREES = 0;
+
+  let titleDegrees;
+
   console.log(schedulesScholar, scheduleTeacher);
+
+  schedulesScholar.map((schedule) => {
+    if (schedule.groups.degrees.code == "LEPRIM") {
+      numberLEPRIM++;
+    } else if (schedule.groups.degrees.code == "LEPREES") {
+      numberLEPREES++;
+    }
+  });
+
+  if (numberLEPRIM > 0 && numberLEPREES > 0) {
+    titleDegrees = "EDUCACIÓN PRIMARIA Y PREESCOLAR";
+  } else if (numberLEPRIM > 0) {
+    titleDegrees = "EDUCACIÓN PRIMARIA";
+  } else if (numberLEPREES > 0) {
+    titleDegrees = "EDUCACIÓN PREESCOLAR";
+  }
 
   const generatePDF = () => {
     const doc = new jsPDF("p", "px", "letter");
@@ -82,10 +103,10 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
     const infoGroup = [
       [
         "ESCUELA NORMAL URBANA",
-        `PERIODO ESCOLAR: ${scheduleTeacher[0].semesters.school_year}`,
+        `PERIODO ESCOLAR: ${schedulesScholar[0].semesters.school_year}`,
       ],
-      ["LICENCIATURA EN EDUCACIÓN PRIMARIA Y PREESCOLAR", `PLAN: 2022`],
-      [`DOCENTE: ${scheduleTeacher[0].workers.name}`, `TURNO: MATUTINO`],
+      [`LICENCIATURA EN ${titleDegrees}`, `PLAN: 2022`],
+      [`DOCENTE: ${schedulesScholar[0].workers.name}`, `TURNO: MATUTINO`],
     ];
 
     doc.autoTable({

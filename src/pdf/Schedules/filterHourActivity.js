@@ -2,7 +2,6 @@ function filterHourActivity(schedules, weekday, startTime) {
   const activitytHour = schedules.filter((schedule) => {
     return schedule.weekday === weekday && schedule.start_time === startTime;
   });
-  console.log(schedules);
 
   if (activitytHour.length > 0) {
     const textSchedule = `${activitytHour[0].activity}`;
