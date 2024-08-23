@@ -25,3 +25,17 @@ export async function createScheduleTeachers(newScheduleTeachers) {
 
   return data;
 }
+
+export async function deleteScheduleTeachers(id) {
+  const { data, error } = await supabase
+    .from("schedule_teachers")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Hubo un error al eleminar el registro");
+  }
+
+  return data;
+}

@@ -72,7 +72,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
       return schedule.worker_id === +workerId;
     });
 
-    console.log(scheduleTeacherFilter, scheduleAssignmentsFilter);
+    // console.log(scheduleTeacherFilter, scheduleAssignmentsFilter);
 
     setFilteredSchedulesTeacher(scheduleTeacherFilter);
     setFilteredSchedulesAssignments(scheduleAssignmentsFilter);
@@ -82,7 +82,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
 
     setCurrentWorker(workerFounded);
 
-    console.log(currentWorker);
+    // console.log(currentWorker);
   }
 
   // Extract Subjects
@@ -106,7 +106,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
 
   const groupedSubjects = groupData(filteredSchedulesAssignments, "subject_id");
 
-  console.log(groupedSubjects);
+  // console.log(groupedSubjects);
 
   // Extract Teacher Schedules
 
