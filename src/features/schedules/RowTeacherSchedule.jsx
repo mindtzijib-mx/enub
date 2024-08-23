@@ -83,7 +83,7 @@ function RowTeacherSchedule({ schedulesScholar, scheduleTeacher }) {
       </TableRow>
       <LongRow role="row">
         <p>8:50 - 9:20</p>
-        <p>Recreo</p>
+        <p>RECESO</p>
       </LongRow>
       <TableRow role="row">
         <p>9:20 - 11:10</p>
@@ -213,7 +213,7 @@ function RowTeacherSchedule({ schedulesScholar, scheduleTeacher }) {
       </TableRow>
       <LongRow role="row">
         <p>13:00 - 13:10</p>
-        <p>Recreo</p>
+        <p>RECESO</p>
       </LongRow>
       <TableRow role="row">
         <p>13:10 - 15:00</p>

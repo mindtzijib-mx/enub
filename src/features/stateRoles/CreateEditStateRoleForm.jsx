@@ -3,21 +3,62 @@ import { useForm } from "react-hook-form";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FormRow from "../../ui/FormRow";
-import { useQueryClient } from "@tanstack/react-query";
+import { useEditStateRole } from "./useEditStateRole";
 
 function CreateEditStateRoleForm({ stateRoleToEdit = {} }) {
   const { id: editId, ...editValues } = stateRoleToEdit;
+  const { isEditing, editStateRole } = useEditStateRole();
   const isEditSession = Boolean(editId);
 
-  const queryClient = useQueryClient();
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: isEditSession ? editValues : {},
   });
 
   const { errors } = formState;
-  const { mutate, isLoading: isCreating } = useMutation({});
 
-  return <div>CreateEditStateRoleForm</div>;
+  function onSubmit(data) {
+    console.log(data);
+
+    if (isEditSession)
+      editStateRole(
+        { newStateRole: { ...data }, id: editId },
+        {
+          onSuccess: (data) => {
+            reset();
+          },
+        }
+      );
+  }
+
+  return (
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <FormRow label="Rol Estatal" error={errors?.role?.message}>
+        <Input
+          type="text"
+          id="role"
+          disabled={isEditing}
+          {...register("role", {
+            required: "Este campo es requerido",
+          })}
+        />
+      </FormRow>
+      <FormRow label="Trabajador" error={errors?.name_worker?.message}>
+        <Input
+          type="text"
+          id="name_worker"
+          disabled={isEditing}
+          {...register("name_worker", {
+            required: "Este campo es requerido",
+          })}
+        />
+      </FormRow>
+      <FormRow>
+        <Button>
+          {isEditSession ? "Editar Rol Estatal" : "Añadir Rol Estatal"}
+        </Button>
+      </FormRow>
+    </Form>
+  );
 }
 
 export default CreateEditStateRoleForm;

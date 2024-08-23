@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import Button from "../../ui/Button";
+import Modal from "../../ui/Modal";
+import CreateEditStateRoleForm from "./CreateEditStateRoleForm";
+import { useState } from "react";
 
 const TableRow = styled.div`
   display: grid;
@@ -16,13 +19,20 @@ const TableRow = styled.div`
 function StateRoleRow({ role }) {
   console.log(role);
 
+  const [editModal, setEditModal] = useState(false);
+
   return (
     <>
       <TableRow role="row">
         <p>{role.role}</p>
         <p>{role.name_worker}</p>
-        <Button>Editar</Button>
+        <Button onClick={() => setEditModal(!editModal)}>Editar</Button>
       </TableRow>
+      {editModal && (
+        <Modal onClose={() => setEditModal(false)}>
+          <CreateEditStateRoleForm stateRoleToEdit={role} />
+        </Modal>
+      )}
     </>
   );
 }
