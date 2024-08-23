@@ -12,6 +12,7 @@ import Semesters from "./pages/Semesters";
 import ScheduleDashboard from "./pages/ScheduleDashboard";
 import StudyPrograms from "./pages/Records/StudyPrograms";
 import { Toaster } from "react-hot-toast";
+import StateRoles from "./pages/Records/StateRoles";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +37,7 @@ function App() {
               <Route path="subjects" element={<Subjects />} />
               <Route path="groups" element={<Groups />} />
               <Route path="study-programs" element={<StudyPrograms />} />
+              <Route path="state-roles" element={<StateRoles />} />
               <Route path="semesters" element={<Semesters />} />
               <Route path="semesters/:id" element={<ScheduleDashboard />} />
               <Route path="*" element={<PageNotFound />} />

@@ -242,7 +242,16 @@ function RowTeacherSchedule({ schedulesScholar, scheduleTeacher }) {
           />
         </div>
         <div>
-          <b>ACADEMIA</b>
+          <HourScheduleSubjectGroup
+            schedules={schedulesScholar}
+            weekday="Miercoles"
+            startTime="13:10:00"
+          />
+          <HourScheduleSubjectTeacher
+            schedules={scheduleTeacher}
+            weekday="Miercoles"
+            startTime="13:10:00"
+          />
         </div>
         <div>
           <HourScheduleSubjectGroup

@@ -45,7 +45,7 @@ function ScheduleGroupPDF({ schedules }) {
       ],
       [
         "8:50 - 9:20",
-        { content: "RECREO", colSpan: 5, styles: { halign: "center" } },
+        { content: "RECESO", colSpan: 5, styles: { halign: "center" } },
       ],
       [
         "9:20 - 11:10",
@@ -65,7 +65,7 @@ function ScheduleGroupPDF({ schedules }) {
       ],
       [
         "13:00 - 13:10",
-        { content: "RECREO", colSpan: 5, styles: { halign: "center" } },
+        { content: "RECESO", colSpan: 5, styles: { halign: "center" } },
       ],
       [
         "13:10 - 15:00",
