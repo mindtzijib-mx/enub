@@ -2,6 +2,7 @@ import { useState } from "react";
 import Select from "../../ui/Select";
 import styled from "styled-components";
 import calculateSemesterGroup from "../../helpers/calculateSemesterGroup";
+import TeacherAssignmentPDF from "../../pdf/Schedules/TeacherAssignmentPDF";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -58,6 +59,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
   const [filteredSchedulesTeacher, setFilteredSchedulesTeacher] = useState([]);
   const [filteredSchedulesAssignments, setFilteredSchedulesAssignments] =
     useState([]);
+  const [currentWorker, setCurrentWorker] = useState([]);
 
   let totalHours = 4;
 
@@ -74,6 +76,13 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
 
     setFilteredSchedulesTeacher(scheduleTeacherFilter);
     setFilteredSchedulesAssignments(scheduleAssignmentsFilter);
+    const workerFounded = workers.filter((worker) => {
+      return worker.id === +workerId;
+    });
+
+    setCurrentWorker(workerFounded);
+
+    console.log(currentWorker);
   }
 
   // Extract Subjects
@@ -219,6 +228,11 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
           <p>{totalHours} hrs</p>
         </TableRow>
       </Table>
+      <TeacherAssignmentPDF
+        groupedSubjects={groupedSubjects}
+        uniqueTeacherSchedule={uniqueTeacherSchedule}
+        currentWorker={currentWorker}
+      />
     </>
   );
 }

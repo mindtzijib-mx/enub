@@ -20,7 +20,7 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
 
   let titleDegrees;
 
-  console.log(schedulesScholar, scheduleTeacher);
+  // console.log(schedulesScholar, scheduleTeacher);
 
   schedulesScholar.map((schedule) => {
     if (schedule.groups.degrees.code == "LEPRIM") {
