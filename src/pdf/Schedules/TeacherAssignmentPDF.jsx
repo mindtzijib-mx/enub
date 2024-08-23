@@ -9,6 +9,7 @@ import Spinner from "../../ui/Spinner.jsx";
 import { useRoles } from "../../features/roles/useRoles.js";
 import { useStateRoles } from "../../features/stateRoles/useStateRoles.js";
 import calculateSemesterGroup from "../../helpers/calculateSemesterGroup.js";
+import capitalizeName from "../../helpers/capitalizeFirstLetter.js";
 
 function TeacherAssignmentPDF({
   groupedSubjects,
@@ -165,7 +166,7 @@ function TeacherAssignmentPDF({
       body: [
         [
           {
-            content: `MTRO(A). ${currentWorker[0].name}`,
+            content: `MTRO(A). ${capitalizeName(currentWorker[0].name)}`,
             styles: { font: "Montserrat-Bold" },
           },
         ],
@@ -352,7 +353,10 @@ function TeacherAssignmentPDF({
         font: "Montserrat-Regular",
         fontSize: 10,
       },
-      body: [[roles[0].workers.name], ["Subdirector Académico"]],
+      body: [
+        [capitalizeName(roles[0].workers.name)],
+        ["Subdirector Académico"],
+      ],
       theme: "plain",
     });
 

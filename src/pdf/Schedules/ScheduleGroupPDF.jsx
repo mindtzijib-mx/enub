@@ -197,11 +197,11 @@ function ScheduleGroupPDF({ schedules }) {
       ],
       [
         {
-          content: "Director(a) De Educación Superior",
+          content: stateRoles[0].role,
           styles: { font: "Montserrat-Bold" },
         },
         {
-          content: "Coordinador(a) De Escuelas Normales IESMA Y UPN",
+          content: stateRoles[1].role,
           styles: { font: "Montserrat-Bold" },
         },
       ],
