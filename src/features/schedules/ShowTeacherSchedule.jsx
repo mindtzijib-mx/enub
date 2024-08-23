@@ -5,6 +5,7 @@ import calculateSemesterGroup from "../../helpers/calculateSemesterGroup";
 import { useState } from "react";
 import RowTeacherSchedule from "./RowTeacherSchedule";
 import ScheduleTeacherPDF from "../../pdf/Schedules/ScheduleTeacherPDF";
+import capitalizeName from "../../helpers/capitalizeFirstLetter";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -62,7 +63,7 @@ function ShowTeacherSchedule({
         <option value="">Seleccione trabajador</option>
         {workers.map((worker) => (
           <option key={worker.id} value={worker.id}>
-            {worker.name}
+            {capitalizeName(worker.name)}
           </option>
         ))}
       </Select>

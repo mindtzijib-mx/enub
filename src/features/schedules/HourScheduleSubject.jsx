@@ -3,6 +3,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useDeleteScheduleAssignment } from "./useDeleteScheduleAssignment";
+import capitalizeName from "../../helpers/capitalizeFirstLetter";
 
 function HourScheduleSubject({ schedules, weekday, startTime }) {
   const { isDeleting, deleteScheduleAssignment } =
@@ -17,9 +18,9 @@ function HourScheduleSubject({ schedules, weekday, startTime }) {
   if (subjectHour.length > 0)
     return (
       <>
-        <b>{subjectHour[0].subjects.name}</b>
+        <b>{subjectHour[0].subjects.name.toUpperCase()}</b>
         <br />
-        <em>{subjectHour[0].workers.name}</em>
+        <em>{capitalizeName(subjectHour[0].workers.name)}</em>
         <br />
         <FaEdit onClick={() => setEditModal(!editModal)} />
         &nbsp; &nbsp; &nbsp;

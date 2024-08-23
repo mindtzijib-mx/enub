@@ -6,7 +6,7 @@ function filterHourGroup(schedules, weekday, startTime) {
   });
 
   if (subjectHour.length > 0) {
-    const textSchedule = `${subjectHour[0].subjects.name}
+    const textSchedule = `${subjectHour[0].subjects.name.toUpperCase()}
   
   ${calculateSemesterGroup(subjectHour[0].groups.year_of_admission)}° "${
       subjectHour[0].groups.letter

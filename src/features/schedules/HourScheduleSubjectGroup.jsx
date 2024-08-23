@@ -20,7 +20,7 @@ function HourScheduleSubjectGroup({ schedules, weekday, startTime }) {
   if (subjectHour.length > 0)
     return (
       <>
-        <b>{subjectHour[0]?.subjects?.name}</b>
+        <b>{subjectHour[0]?.subjects?.name.toUpperCase()}</b>
         <br />
         <em>
           {calculateSemesterGroup(subjectHour[0]?.groups?.year_of_admission)}° "

@@ -11,6 +11,7 @@ import Spinner from "../../ui/Spinner.jsx";
 import filterHour from "./filterHour.js";
 import calculateSemesterGroup from "../../helpers/calculateSemesterGroup.js";
 import logoEnub from "../enub.jpg";
+import capitalizeName from "../../helpers/capitalizeFirstLetter.js";
 
 function ScheduleGroupPDF({ schedules }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
@@ -190,7 +191,10 @@ function ScheduleGroupPDF({ schedules }) {
           styles: { font: "Montserrat-Bold" },
         },
       ],
-      [roles[1].workers.name, roles[0].workers.name],
+      [
+        capitalizeName(roles[1].workers.name),
+        capitalizeName(roles[0].workers.name),
+      ],
       [
         {
           content: "Director(a) De Educación Superior",
@@ -202,8 +206,8 @@ function ScheduleGroupPDF({ schedules }) {
         },
       ],
       [
-        stateRoles[0].name_worker.toUpperCase(),
-        stateRoles[1].name_worker.toUpperCase(),
+        capitalizeName(stateRoles[0].name_worker.toUpperCase()),
+        capitalizeName(stateRoles[1].name_worker.toUpperCase()),
       ],
     ];
 

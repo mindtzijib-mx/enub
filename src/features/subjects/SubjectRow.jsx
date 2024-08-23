@@ -27,7 +27,7 @@ function SubjectRow({ subject }) {
     <>
       <TableRow role="row">
         <p>{semester}</p>
-        <p>{name}</p>
+        <p>{name.toUpperCase()}</p>
         <p>{credits}</p>
         <p>{hours_per_week}</p>
         <p>{hours_per_semester}</p>

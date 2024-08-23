@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import calculateSemesterGroup from "../../helpers/calculateSemesterGroup";
 import { createScheduleAssignments } from "../../services/apiScheduleAssignments";
+import capitalizeName from "../../helpers/capitalizeFirstLetter";
 
 function CreateScholarSchedule({ workers, subjects, groups, semesterId }) {
   const queryClient = useQueryClient();
@@ -94,7 +95,7 @@ function CreateScholarSchedule({ workers, subjects, groups, semesterId }) {
           <option value="">Seleccione...</option>
           {filteredSubjects.map((subject) => (
             <option key={subject.id} value={subject.id}>
-              {subject.semester}° - {subject.name} (
+              {subject.semester}° - {subject.name.toUpperCase()} (
               {subject.study_programs.year} - {subject.degrees.code})
             </option>
           ))}
@@ -141,7 +142,7 @@ function CreateScholarSchedule({ workers, subjects, groups, semesterId }) {
           <option value="">Seleccione...</option>
           {workers.map((worker) => (
             <option key={worker.id} value={worker.id}>
-              {worker.name}
+              {capitalizeName(worker.name)}
             </option>
           ))}
         </Select>

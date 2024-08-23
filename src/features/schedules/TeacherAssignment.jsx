@@ -3,6 +3,7 @@ import Select from "../../ui/Select";
 import styled from "styled-components";
 import calculateSemesterGroup from "../../helpers/calculateSemesterGroup";
 import TeacherAssignmentPDF from "../../pdf/Schedules/TeacherAssignmentPDF";
+import capitalizeName from "../../helpers/capitalizeFirstLetter";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -146,7 +147,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
         <option value="">Seleccione trabajador</option>
         {workers.map((worker) => (
           <option key={worker.id} value={worker.id}>
-            {worker.name}
+            {capitalizeName(worker.name)}
           </option>
         ))}
       </Select>
