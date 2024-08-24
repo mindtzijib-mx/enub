@@ -11,6 +11,7 @@ import { useScheduleAssignments } from "../features/schedules/useScheduleAssignm
 import calculateSemesterGroup from "../helpers/calculateSemesterGroup";
 import TeacherSchedule from "../features/schedules/TeacherSchedule";
 import { useScheduleTeachers } from "../features/schedules/useScheduleTeachers";
+import WorkerSheetSemester from "../pdf/WorkerSheetSemester";
 
 function ScheduleDashboard() {
   const { id } = useParams();
@@ -75,7 +76,7 @@ function ScheduleDashboard() {
             scheduleAssignments={scheduleAssignmentsBySemester}
           />
         )}
-        <Button>Imprimir plantilla horaria</Button>
+        <WorkerSheetSemester />
       </Row>
     </Row>
   );

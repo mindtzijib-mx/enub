@@ -87,6 +87,7 @@ function CreateTeacherSchedule({ workers, semesterId }) {
           <option value="09:20:00">9:20</option>
           <option value="11:10:00">11:10</option>
           <option value="13:10:00">13:10</option>
+          <option value="17:00:00">17:00</option>
         </Select>
       </FormRow>
       <FormRow
@@ -105,6 +106,7 @@ function CreateTeacherSchedule({ workers, semesterId }) {
           <option value="11:10:00">11:10</option>
           <option value="13:00:00">13:00</option>
           <option value="15:00:00">15:00</option>
+          <option value="19:00:00">19:00</option>
         </Select>
       </FormRow>
       <FormRow>

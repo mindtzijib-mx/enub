@@ -10,7 +10,6 @@ import { useStateRoles } from "../../features/stateRoles/useStateRoles.js";
 import Spinner from "../../ui/Spinner.jsx";
 import filterHour from "./filterHour.js";
 import calculateSemesterGroup from "../../helpers/calculateSemesterGroup.js";
-import logoEnub from "../enub.jpg";
 import capitalizeName from "../../helpers/capitalizeFirstLetter.js";
 
 function ScheduleGroupPDF({ schedules }) {
