@@ -11,7 +11,13 @@ import calculateSemesterGroup from "../../helpers/calculateSemesterGroup";
 import { createScheduleAssignments } from "../../services/apiScheduleAssignments";
 import capitalizeName from "../../helpers/capitalizeFirstLetter";
 
-function CreateScholarSchedule({ workers, subjects, groups, semesterId }) {
+function CreateScholarSchedule({
+  workers,
+  subjects,
+  groups,
+  semesterId,
+  onCloseModal,
+}) {
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset, formState } = useForm();
   const { errors } = formState;
@@ -21,6 +27,7 @@ function CreateScholarSchedule({ workers, subjects, groups, semesterId }) {
       toast.success("El registro se creó correctamente");
       queryClient.invalidateQueries({ queryKey: ["scheduleAssignments"] });
       reset();
+      onCloseModal?.();
     },
     onError: (err) => toast.error(err.message),
   });
@@ -148,7 +155,11 @@ function CreateScholarSchedule({ workers, subjects, groups, semesterId }) {
         </Select>
       </FormRow>
       <FormRow>
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
           Cancelar
         </Button>
         <Button>Agregar Horario</Button>

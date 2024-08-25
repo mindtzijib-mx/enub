@@ -4,6 +4,7 @@ import Button from "../../ui/Button";
 import CreateTeacherSchedule from "./CreateTeacherSchedule";
 import ShowTeacherSchedule from "./ShowTeacherSchedule";
 import TeacherAssignment from "./TeacherAssignment";
+import Modal from "../../ui/Modal";
 
 function TeacherSchedule({
   workers,
@@ -21,7 +22,13 @@ function TeacherSchedule({
         Agregar horario de actividades del maestro
       </Button>
       {showCreate && (
-        <CreateTeacherSchedule workers={workers} semesterId={semesterId} />
+        <Modal onClose={() => setShowCreate((show) => !show)}>
+          <CreateTeacherSchedule
+            workers={workers}
+            semesterId={semesterId}
+            onCloseModal={() => setShowCreate(false)}
+          />
+        </Modal>
       )}
       <Button
         variation="secondary"

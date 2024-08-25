@@ -9,8 +9,9 @@ import { useState } from "react";
 import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
 import { createScheduleTeachers } from "../../services/apiScheduleTeachers";
+import capitalizeName from "../../helpers/capitalizeFirstLetter";
 
-function CreateTeacherSchedule({ workers, semesterId }) {
+function CreateTeacherSchedule({ workers, semesterId, onCloseModal }) {
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset, formState } = useForm();
   const { errors } = formState;
@@ -20,6 +21,7 @@ function CreateTeacherSchedule({ workers, semesterId }) {
       toast.success("El registro se creó correctamente");
       queryClient.invalidateQueries({ queryKey: ["scheduleTeachers"] });
       reset();
+      onCloseModal?.();
     },
     onError: (err) => toast.error(err.message),
   });
@@ -58,7 +60,7 @@ function CreateTeacherSchedule({ workers, semesterId }) {
           <option value="">Seleccione...</option>
           {workers.map((worker) => (
             <option key={worker.id} value={worker.id}>
-              {worker.name}
+              {capitalizeName(worker.name)}
             </option>
           ))}
         </Select>
@@ -110,7 +112,11 @@ function CreateTeacherSchedule({ workers, semesterId }) {
         </Select>
       </FormRow>
       <FormRow>
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
           Cancelar
         </Button>
         <Button>Agregar Actividad Horaria</Button>

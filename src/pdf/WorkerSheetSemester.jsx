@@ -7,7 +7,14 @@ import "../styles/Montserrat-BoldItalic-bolditalic.js";
 import Button from "../ui/Button";
 import { useRoles } from "../features/roles/useRoles.js";
 
-function WorkerSheetSemester() {
+function transformDate(dateString) {
+  const [year, month, day] = dateString.split("-");
+  const shortYear = year.slice(-2);
+
+  return `${day}-${month}-${shortYear}`;
+}
+
+function WorkerSheetSemester({ workers }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
 
   const generatePDF = () => {
@@ -158,8 +165,71 @@ function WorkerSheetSemester() {
       margin: { top: 70 },
     });
 
+    const columns = [
+      "PROG",
+      "NOMBRE, DOMICILIO, FECHA DE INGRESO, CORREO ELÉCTRONICO, TELÉFONO",
+      "RFC",
+      "SOST",
+      "PLAZA Y CLAVE DE PAGO",
+      "PREPARACIÓN PROFESIONAL (ESPECIALIDAD)",
+      "ASIGNATURA QUE IMPARTE (GRADO Y GRUPO)",
+      "HRS. FRENTE A GRUPO",
+      "DESCARGA ACADÉMICA",
+      "FOTOS",
+      "FIRMA",
+      "OBSERVACIONES",
+    ];
+
+    const body = workers.map((worker) => {
+      return [
+        worker.id,
+        `${worker.name}
+CALLE: ${worker.street}
+${worker.neighborhood}
+TEL: ${worker.phone}
+C.P: ${worker.post_code}
+${worker.city}, ${worker.state}
+${worker.email === null ? "" : worker.email}
+${worker.date_of_admissions.map(
+  (date) => ` ${date.type}: ${transformDate(date.date_of_admission)}`
+)}`,
+        worker.RFC,
+        `${worker.sustenance_plazas.map(
+          ({ sustenance }) => `
+${sustenance}`
+        )}`,
+        `${worker.sustenance_plazas.map(
+          ({ payment_key, plaza }) => `
+${payment_key}
+${plaza}`
+        )}`,
+        worker.specialty,
+      ];
+    });
+
+    doc.autoTable({
+      styles: {
+        halign: "left",
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 7,
+      },
+      headStyles: {
+        fillColor: [0, 0, 0],
+        font: "Montserrat-Bold",
+      },
+      /* columnStyles: {
+        0: { cellWidth: 50 },
+      }, */
+      head: [columns],
+      body,
+      theme: "grid",
+    });
+
     doc.output("dataurlnewwindow");
   };
+
+  console.log(workers);
 
   return <Button onClick={generatePDF}>Imprimir plantilla horaria</Button>;
 }

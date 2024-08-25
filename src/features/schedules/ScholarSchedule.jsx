@@ -3,6 +3,7 @@ import Button from "../../ui/Button";
 import Row from "../../ui/Row";
 import CreateScholarSchedule from "./CreateScholarSchedule";
 import ShowScholarSchedule from "./ShowScholarSchedule";
+import Modal from "../../ui/Modal";
 
 function ScholarSchedule({
   workers,
@@ -23,12 +24,15 @@ function ScholarSchedule({
         Agregar horario escolar
       </Button>
       {showAddSchedule && (
-        <CreateScholarSchedule
-          workers={workers}
-          subjects={subjects}
-          groups={groups}
-          semesterId={semesterId}
-        />
+        <Modal onClose={() => setShowAddSchedule((show) => !show)}>
+          <CreateScholarSchedule
+            workers={workers}
+            subjects={subjects}
+            groups={groups}
+            semesterId={semesterId}
+            onCloseModal={() => setShowAddSchedule(false)}
+          />
+        </Modal>
       )}
       <Button
         variation="secondary"

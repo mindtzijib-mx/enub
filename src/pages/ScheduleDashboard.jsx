@@ -76,7 +76,7 @@ function ScheduleDashboard() {
             scheduleAssignments={scheduleAssignmentsBySemester}
           />
         )}
-        <WorkerSheetSemester />
+        <WorkerSheetSemester workers={workers} />
       </Row>
     </Row>
   );
