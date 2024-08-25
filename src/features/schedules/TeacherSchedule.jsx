@@ -18,21 +18,23 @@ function TeacherSchedule({
 
   return (
     <Row>
-      <Button variation="secondary" onClick={() => setShowCreate(!showCreate)}>
-        Agregar horario de actividades del maestro
-      </Button>
-      {showCreate && (
-        <Modal onClose={() => setShowCreate((show) => !show)}>
+      <Modal>
+        <Modal.Open opens="teacher-schedule-form">
+          <Button variation="secondary">
+            Agregar horario de actividades del maestro
+          </Button>
+        </Modal.Open>
+        <Modal.Window name="teacher-schedule-form">
           <CreateTeacherSchedule
             workers={workers}
             semesterId={semesterId}
             onCloseModal={() => setShowCreate(false)}
           />
-        </Modal>
-      )}
+        </Modal.Window>
+      </Modal>
       <Button
         variation="secondary"
-        onClick={() => setShowScheduleTeacher(!showScheduleTeacher)}
+        onClick={() => setShowScheduleTeacher((show) => !show)}
       >
         Ver horarios del maestro
       </Button>
@@ -45,7 +47,7 @@ function TeacherSchedule({
       )}
       <Button
         variation="secondary"
-        onClick={() => setShowAssignmentTeacher(!showAssignmentTeacher)}
+        onClick={() => setShowAssignmentTeacher((show) => !show)}
       >
         Ver asignación horaria
       </Button>

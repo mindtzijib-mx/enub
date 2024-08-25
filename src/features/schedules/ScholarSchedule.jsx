@@ -17,14 +17,11 @@ function ScholarSchedule({
 
   return (
     <Row>
-      <Button
-        variation="secondary"
-        onClick={() => setShowAddSchedule(!showAddSchedule)}
-      >
-        Agregar horario escolar
-      </Button>
-      {showAddSchedule && (
-        <Modal onClose={() => setShowAddSchedule((show) => !show)}>
+      <Modal>
+        <Modal.Open opens="scholar-schedule-form">
+          <Button variation="secondary">Agregar horario escolar</Button>
+        </Modal.Open>
+        <Modal.Window name="scholar-schedule-form">
           <CreateScholarSchedule
             workers={workers}
             subjects={subjects}
@@ -32,11 +29,11 @@ function ScholarSchedule({
             semesterId={semesterId}
             onCloseModal={() => setShowAddSchedule(false)}
           />
-        </Modal>
-      )}
+        </Modal.Window>
+      </Modal>
       <Button
         variation="secondary"
-        onClick={() => setShowScheduleGroup(!showScheduleGroup)}
+        onClick={() => setShowScheduleGroup((show) => !show)}
       >
         Ver horarios del grupo
       </Button>
