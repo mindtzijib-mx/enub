@@ -62,7 +62,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
     useState([]);
   const [currentWorker, setCurrentWorker] = useState([]);
 
-  let totalHours = 4;
+  let totalHours = 2;
 
   function selectingWorker(workerId) {
     const scheduleTeacherFilter = scheduleTeachers.filter((schedule) => {
@@ -181,7 +181,7 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
                           group
                         ][0].groups.letter
                       }
-                      ) &nbsp; &nbsp; &nbsp;
+                      ") &nbsp; &nbsp; &nbsp;
                     </span>
                   </>
                 )
@@ -214,11 +214,6 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
           <p>Acto cívico</p>
           <p>Lunes y fechas conmemorativas</p>
           <p>1</p>
-        </LongRow>
-        <LongRow>
-          <p>Academia</p>
-          <p>(General, licenciatura, semestre y trayecto formativo)</p>
-          <p>2</p>
         </LongRow>
         <TableRow>
           <b>Total</b>

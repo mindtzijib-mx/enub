@@ -10,42 +10,49 @@ import { useDeleteScheduleAssignment } from "./useDeleteScheduleAssignment";
 function HourScheduleSubjectGroup({ schedules, weekday, startTime }) {
   const { isDeleting, deleteScheduleAssignment } =
     useDeleteScheduleAssignment();
-  const subjectHour = schedules.filter((schedule) => {
+  const schedulesHour = schedules.filter((schedule) => {
     return schedule.weekday === weekday && schedule.start_time === startTime;
   });
 
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
-  if (subjectHour.length > 0)
+  if (schedulesHour.length > 0)
     return (
       <>
-        <b>{subjectHour[0]?.subjects?.name.toUpperCase()}</b>
-        <br />
-        <em>
-          {calculateSemesterGroup(subjectHour[0]?.groups?.year_of_admission)}° "
-          {subjectHour[0].groups?.letter}"{" "}
-          {subjectHour[0]?.groups?.degrees?.code}
-        </em>
-        <br />
-        <FaEdit onClick={() => setEditModal(!editModal)} />
-        &nbsp; &nbsp; &nbsp;
-        <FaTrash onClick={() => setDeleteModal(!deleteModal)} />
-        {editModal && (
-          <Modal onClose={() => setEditModal(false)}>
-            <CreateScholarSchedule scheduleToEdit={subjectHour[0]} />
-          </Modal>
-        )}
-        {deleteModal && (
-          <Modal onClose={() => setDeleteModal(false)}>
-            <ConfirmDelete
-              resourceName="horario"
-              disabled={isDeleting}
-              onCloseModal={() => setDeleteModal(false)}
-              onConfirm={() => deleteScheduleAssignment(subjectHour[0].id)}
-            />
-          </Modal>
-        )}
+        {schedulesHour.map((schedule) => (
+          <>
+            <b>{schedule?.subjects.name.toUpperCase()}</b>
+            <br />
+            <em>
+              {calculateSemesterGroup(schedule?.groups?.year_of_admission)}° "
+              {schedule?.groups?.letter}" - {schedule?.groups?.degrees?.code}
+            </em>
+            <br />
+            <Modal>
+              <Modal.Open opens="scholar-schedule-edit-form">
+                <FaEdit />
+              </Modal.Open>
+              <Modal.Window name="scholar-schedule-edit-form">
+                <CreateScholarSchedule scheduleToEdit={schedule} />
+              </Modal.Window>
+            </Modal>
+            &nbsp; &nbsp; &nbsp;
+            <Modal>
+              <Modal.Open opens="scholar-schedule-delete-form">
+                <FaTrash />
+              </Modal.Open>
+              <Modal.Window name="scholar-schedule-delete-form">
+                <ConfirmDelete
+                  resourceName="horario"
+                  disabled={isDeleting}
+                  onCloseModal={() => setDeleteModal(false)}
+                  onConfirm={() => deleteScheduleAssignment(schedule.id)}
+                />
+              </Modal.Window>
+            </Modal>
+          </>
+        ))}
       </>
     );
 
