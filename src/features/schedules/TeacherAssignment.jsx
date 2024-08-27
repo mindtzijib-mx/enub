@@ -112,10 +112,12 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
   // Extract Teacher Schedules
 
   const countTeacherSchedules = filteredSchedulesTeacher.reduce((acc, item) => {
-    if (acc[item.activity]) {
-      acc[item.activity]++;
+    const trimmedAcitivity = item.activity.trim();
+
+    if (acc[trimmedAcitivity]) {
+      acc[trimmedAcitivity]++;
     } else {
-      acc[item.activity] = 1;
+      acc[trimmedAcitivity] = 1;
     }
     return acc;
   }, {});
