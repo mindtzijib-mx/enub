@@ -19,7 +19,7 @@ function TeacherAssignmentPDF({
   const { isLoading: isLoadingRoles, roles } = useRoles();
   const { isLoading: isLoadingStateRoles, stateRoles } = useStateRoles();
 
-  let totalHours = 4;
+  let totalHours = 2;
 
   const groupData = (array, key) => {
     return array.reduce((result, currentValue) => {
