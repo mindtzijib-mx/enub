@@ -1,16 +1,4 @@
-import styled from "styled-components";
-
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
+import Table from "../../ui/Table";
 
 function SubjectRow({ subject }) {
   const {
@@ -25,7 +13,7 @@ function SubjectRow({ subject }) {
 
   return (
     <>
-      <TableRow role="row">
+      <Table.Row>
         <p>{semester}</p>
         <p>{name.toUpperCase()}</p>
         <p>{credits}</p>
@@ -34,7 +22,7 @@ function SubjectRow({ subject }) {
         <p>{study_programs.year}</p>
         <p>{degrees.code}</p>
         <button>Editar</button>
-      </TableRow>
+      </Table.Row>
     </>
   );
 }

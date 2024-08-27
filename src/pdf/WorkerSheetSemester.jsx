@@ -229,7 +229,7 @@ ${plaza}`
     doc.output("dataurlnewwindow");
   };
 
-  console.log(workers);
+  // console.log(workers);
 
   return <Button onClick={generatePDF}>Imprimir plantilla horaria</Button>;
 }

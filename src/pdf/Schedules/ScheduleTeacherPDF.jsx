@@ -16,10 +16,24 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
   const { isLoading: isLoadingStateRoles, stateRoles } = useStateRoles();
 
+  let hasExtraHours = false;
+
   let numberLEPRIM = 0,
     numberLEPREES = 0;
 
   let titleDegrees;
+
+  const afternoonSchedule = schedulesScholar.filter((schedule) => {
+    return schedule.start_time === "17:00:00";
+  });
+
+  const afternoonActivity = scheduleTeacher.filter((schedule) => {
+    return schedule.start_time === "17:00:00";
+  });
+
+  if (afternoonSchedule.length > 0 || afternoonActivity.length > 0) {
+    hasExtraHours = true;
+  }
 
   // console.log(schedulesScholar, scheduleTeacher);
 
@@ -242,6 +256,52 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
         )}${filterHourActivity(scheduleTeacher, "Viernes", "13:10:00")}`,
       ],
     ];
+
+    // ==========ADD EXTRA HOURS IF THERE'S SOME ==============
+
+    const extraHours1 = [
+      {
+        content: "HORARIO EXTRACURRICULAR",
+        colSpan: 6,
+        styles: { halign: "center" },
+      },
+    ];
+
+    const extraHours2 = [
+      "17:00 - 19:00",
+      `${filterHourGroup(
+        schedulesScholar,
+        "Lunes",
+        "17:00:00"
+      )}${filterHourActivity(scheduleTeacher, "Lunes", "17:00:00")}`,
+      `${filterHourGroup(
+        schedulesScholar,
+        "Martes",
+        "17:00:00"
+      )}${filterHourActivity(scheduleTeacher, "Martes", "17:00:00")}`,
+      `${filterHourGroup(
+        schedulesScholar,
+        "Miercoles",
+        "17:00:00"
+      )}${filterHourActivity(scheduleTeacher, "Miercoles", "17:00:00")}`,
+      `${filterHourGroup(
+        schedulesScholar,
+        "Jueves",
+        "17:00:00"
+      )}${filterHourActivity(scheduleTeacher, "Jueves", "17:00:00")}`,
+      `${filterHourGroup(
+        schedulesScholar,
+        "Viernes",
+        "17:00:00"
+      )}${filterHourActivity(scheduleTeacher, "Viernes", "17:00:00")}`,
+    ];
+
+    if (hasExtraHours) {
+      data.push(extraHours1);
+      data.push(extraHours2);
+    }
+
+    // ==========ADD EXTRA HOURS IF THERE'S SOME ==============
 
     doc.autoTable({
       styles: {

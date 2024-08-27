@@ -34,6 +34,19 @@ const LongRowComplete = styled.div`
 `;
 
 function RowTeacherSchedule({ schedulesScholar, scheduleTeacher }) {
+  let hasExtraHours = false;
+  const afternoonSchedule = schedulesScholar.filter((schedule) => {
+    return schedule.start_time === "17:00:00";
+  });
+
+  const afternoonActivity = scheduleTeacher.filter((schedule) => {
+    return schedule.start_time === "17:00:00";
+  });
+
+  if (afternoonSchedule.length > 0 || afternoonActivity.length > 0) {
+    hasExtraHours = true;
+  }
+
   return (
     <>
       <TableRow role="row">
@@ -287,72 +300,76 @@ function RowTeacherSchedule({ schedulesScholar, scheduleTeacher }) {
           />
         </div>
       </TableRow>
-      <LongRowComplete role="row">
-        <p>HORARIO EXTRACURRICULAR</p>
-      </LongRowComplete>
-      <TableRow role="row">
-        <p>17:00 - 19:00</p>
-        <div>
-          <HourScheduleSubjectGroup
-            schedules={schedulesScholar}
-            weekday="Lunes"
-            startTime="17:00:00"
-          />
-          <HourScheduleSubjectTeacher
-            schedules={scheduleTeacher}
-            weekday="Lunes"
-            startTime="17:00:00"
-          />
-        </div>
-        <div>
-          <HourScheduleSubjectGroup
-            schedules={schedulesScholar}
-            weekday="Martes"
-            startTime="17:00:00"
-          />
-          <HourScheduleSubjectTeacher
-            schedules={scheduleTeacher}
-            weekday="Martes"
-            startTime="17:00:00"
-          />
-        </div>
-        <div>
-          <HourScheduleSubjectGroup
-            schedules={schedulesScholar}
-            weekday="Miercoles"
-            startTime="17:00:00"
-          />
-          <HourScheduleSubjectTeacher
-            schedules={scheduleTeacher}
-            weekday="Miercoles"
-            startTime="17:00:00"
-          />
-        </div>
-        <div>
-          <HourScheduleSubjectGroup
-            schedules={schedulesScholar}
-            weekday="Jueves"
-            startTime="17:00:00"
-          />
-          <HourScheduleSubjectTeacher
-            schedules={scheduleTeacher}
-            weekday="Jueves"
-            startTime="17:00:00"
-          />
-        </div>
-        <div>
-          <HourScheduleSubjectGroup
-            schedules={schedulesScholar}
-            weekday="Viernes"
-            startTime="17:00:00"
-          />
-          <HourScheduleSubjectTeacher
-            schedules={scheduleTeacher}
-            weekday="Viernes"
-            startTime="17:00:00"
-          />
-        </div>
-      </TableRow>
+      {hasExtraHours && (
+        <>
+          <LongRowComplete role="row">
+            <p>HORARIO EXTRACURRICULAR</p>
+          </LongRowComplete>
+          <TableRow role="row">
+            <p>17:00 - 19:00</p>
+            <div>
+              <HourScheduleSubjectGroup
+                schedules={schedulesScholar}
+                weekday="Lunes"
+                startTime="17:00:00"
+              />
+              <HourScheduleSubjectTeacher
+                schedules={scheduleTeacher}
+                weekday="Lunes"
+                startTime="17:00:00"
+              />
+            </div>
+            <div>
+              <HourScheduleSubjectGroup
+                schedules={schedulesScholar}
+                weekday="Martes"
+                startTime="17:00:00"
+              />
+              <HourScheduleSubjectTeacher
+                schedules={scheduleTeacher}
+                weekday="Martes"
+                startTime="17:00:00"
+              />
+            </div>
+            <div>
+              <HourScheduleSubjectGroup
+                schedules={schedulesScholar}
+                weekday="Miercoles"
+                startTime="17:00:00"
+              />
+              <HourScheduleSubjectTeacher
+                schedules={scheduleTeacher}
+                weekday="Miercoles"
+                startTime="17:00:00"
+              />
+            </div>
+            <div>
+              <HourScheduleSubjectGroup
+                schedules={schedulesScholar}
+                weekday="Jueves"
+                startTime="17:00:00"
+              />
+              <HourScheduleSubjectTeacher
+                schedules={scheduleTeacher}
+                weekday="Jueves"
+                startTime="17:00:00"
+              />
+            </div>
+            <div>
+              <HourScheduleSubjectGroup
+                schedules={schedulesScholar}
+                weekday="Viernes"
+                startTime="17:00:00"
+              />
+              <HourScheduleSubjectTeacher
+                schedules={scheduleTeacher}
+                weekday="Viernes"
+                startTime="17:00:00"
+              />
+            </div>
+          </TableRow>
+        </>
+      )}
     </>
   );
 }
