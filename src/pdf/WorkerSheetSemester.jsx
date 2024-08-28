@@ -204,7 +204,49 @@ function WorkerSheetSemester({ workers }) {
         "subject_id"
       );
 
-      console.log(groupedSubjects);
+      let numHours = 0;
+      let totalHours = 2;
+
+      const countTeacherSchedules = worker.schedule_teachers.reduce(
+        (acc, item) => {
+          const trimmedAcitivity = item.activity.trim();
+
+          if (acc[trimmedAcitivity]) {
+            acc[trimmedAcitivity]++;
+          } else {
+            acc[trimmedAcitivity] = 1;
+          }
+          return acc;
+        },
+        {}
+      );
+
+      const uniqueTeacherSchedule = Object.keys(countTeacherSchedules).map(
+        (schedule) => {
+          return {
+            name: schedule,
+            quantity: countTeacherSchedules[schedule],
+          };
+        }
+      );
+
+      console.log(uniqueTeacherSchedule);
+
+      // Count num hours
+
+      Object.keys(groupedSubjects).map(
+        (subject) => (numHours += groupedSubjects[subject].length * 2)
+      );
+
+      // Count total hours
+
+      Object.keys(groupedSubjects).map(
+        (subject) => (totalHours += groupedSubjects[subject].length * 2)
+      );
+
+      uniqueTeacherSchedule.map(
+        (schedule) => (totalHours += schedule.quantity * 2)
+      );
 
       return [
         worker.id,
@@ -244,6 +286,10 @@ ${Object.keys(groupData(groupedSubjects[subject], "group_id")).map(
 )} - ${groupedSubjects[subject][0].groups.degrees.code}
 `
         ),
+        "",
+        `${numHours > 0 ? `NO. DE HORAS: ${numHours}` : ""}
+
+${totalHours > 2 ? `TOTAL DE HORAS: ${totalHours}` : ""}`,
       ];
     });
 
