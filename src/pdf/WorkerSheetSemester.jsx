@@ -6,6 +6,7 @@ import "../styles/Montserrat-Bold-bold.js";
 import "../styles/Montserrat-BoldItalic-bolditalic.js";
 import Button from "../ui/Button";
 import { useRoles } from "../features/roles/useRoles.js";
+import calculateSemesterGroup from "../helpers/calculateSemesterGroup.js";
 
 function transformDate(dateString) {
   const [year, month, day] = dateString.split("-");
@@ -13,6 +14,23 @@ function transformDate(dateString) {
 
   return `${day}-${month}-${shortYear}`;
 }
+
+const groupData = (array, key) => {
+  return array.reduce((result, currentValue) => {
+    // Obtén el valor de la propiedad por la que vamos a agrupar
+    const groupKey = currentValue[key];
+
+    // Si el grupo aún no existe, créalo
+    if (!result[groupKey]) {
+      result[groupKey] = [];
+    }
+
+    // Agrega el elemento actual al grupo correspondiente
+    result[groupKey].push(currentValue);
+
+    return result;
+  }, {});
+};
 
 function WorkerSheetSemester({ workers }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
@@ -181,6 +199,13 @@ function WorkerSheetSemester({ workers }) {
     ];
 
     const body = workers.map((worker) => {
+      const groupedSubjects = groupData(
+        worker.schedule_assignments,
+        "subject_id"
+      );
+
+      console.log(groupedSubjects);
+
       return [
         worker.id,
         `${worker.name}
@@ -204,6 +229,21 @@ ${payment_key}
 ${plaza}`
         )}`,
         worker.specialty,
+        Object.keys(groupedSubjects).map(
+          (subject) => `
+${groupedSubjects[subject][0].subjects.name} 
+
+${Object.keys(groupData(groupedSubjects[subject], "group_id")).map(
+  (group) =>
+    ` (${calculateSemesterGroup(
+      groupData(groupedSubjects[subject], "group_id")[group][0].groups
+        .year_of_admission
+    )} ° "${
+      groupData(groupedSubjects[subject], "group_id")[group][0].groups.letter
+    }")`
+)} - ${groupedSubjects[subject][0].groups.degrees.code}
+`
+        ),
       ];
     });
 
@@ -229,7 +269,7 @@ ${plaza}`
     doc.output("dataurlnewwindow");
   };
 
-  // console.log(workers);
+  console.log(workers);
 
   return <Button onClick={generatePDF}>Imprimir plantilla horaria</Button>;
 }
