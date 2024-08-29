@@ -131,7 +131,7 @@ function TeacherAssignmentPDF({
       ],
       [
         {
-          content: "OFICIO Nº: SDAC/ENU/085/2023-2024",
+          content: `OFICIO Nº: SDAC/ENU/085/${new Date().getFullYear()}`,
           styles: { font: "Montserrat-Bold" },
         },
       ],

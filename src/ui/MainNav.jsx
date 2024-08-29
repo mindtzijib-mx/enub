@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { HiAcademicCap, HiBookOpen, HiOutlineUsers } from "react-icons/hi2";
 import { useState } from "react";
 import { IoIosArrowDropdownCircle, IoIosArrowDropright } from "react-icons/io";
-import { FaCalendar } from "react-icons/fa";
+import { FaCalendar, FaTable } from "react-icons/fa";
 import { MdLibraryBooks } from "react-icons/md";
 import { FaUserGear } from "react-icons/fa6";
 import { RiGovernmentFill } from "react-icons/ri";
@@ -123,6 +123,12 @@ function MainNav() {
             <StyledNavLink to="/state-roles">
               <RiGovernmentFill />
               <span>Roles Estatales</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/others">
+              <FaTable />
+              <span>Otros datos</span>
             </StyledNavLink>
           </li>
         </NavList>

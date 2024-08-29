@@ -15,6 +15,10 @@ function transformDate(dateString) {
   return `${day}-${month}-${shortYear}`;
 }
 
+function getFileExtension(fileName) {
+  return fileName?.split(".").pop();
+}
+
 const groupData = (array, key) => {
   return array.reduce((result, currentValue) => {
     // Obtén el valor de la propiedad por la que vamos a agrupar
@@ -32,7 +36,7 @@ const groupData = (array, key) => {
   }, {});
 };
 
-function WorkerSheetSemester({ workers }) {
+function WorkerSheetSemester({ workers, semester }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
 
   const generatePDF = () => {
@@ -129,7 +133,7 @@ function WorkerSheetSemester({ workers }) {
                 colSpan: 2,
               },
               "TURNO:MATUTINO",
-              "CICLO ESCOLAR: 2022-2023",
+              `CICLO ESCOLAR: ${semester[0].school_year}`,
             ],
             [
               {
@@ -198,101 +202,6 @@ function WorkerSheetSemester({ workers }) {
       "OBSERVACIONES",
     ];
 
-    const body = workers.map((worker) => {
-      const groupedSubjects = groupData(
-        worker.schedule_assignments,
-        "subject_id"
-      );
-
-      let numHours = 0;
-      let totalHours = 2;
-
-      const countTeacherSchedules = worker.schedule_teachers.reduce(
-        (acc, item) => {
-          const trimmedAcitivity = item.activity.trim();
-
-          if (acc[trimmedAcitivity]) {
-            acc[trimmedAcitivity]++;
-          } else {
-            acc[trimmedAcitivity] = 1;
-          }
-          return acc;
-        },
-        {}
-      );
-
-      const uniqueTeacherSchedule = Object.keys(countTeacherSchedules).map(
-        (schedule) => {
-          return {
-            name: schedule,
-            quantity: countTeacherSchedules[schedule],
-          };
-        }
-      );
-
-      console.log(uniqueTeacherSchedule);
-
-      // Count num hours
-
-      Object.keys(groupedSubjects).map(
-        (subject) => (numHours += groupedSubjects[subject].length * 2)
-      );
-
-      // Count total hours
-
-      Object.keys(groupedSubjects).map(
-        (subject) => (totalHours += groupedSubjects[subject].length * 2)
-      );
-
-      uniqueTeacherSchedule.map(
-        (schedule) => (totalHours += schedule.quantity * 2)
-      );
-
-      return [
-        worker.id,
-        `${worker.name}
-CALLE: ${worker.street}
-${worker.neighborhood}
-TEL: ${worker.phone}
-C.P: ${worker.post_code}
-${worker.city}, ${worker.state}
-${worker.email === null ? "" : worker.email}
-${worker.date_of_admissions.map(
-  (date) => ` ${date.type}: ${transformDate(date.date_of_admission)}`
-)}`,
-        worker.RFC,
-        `${worker.sustenance_plazas.map(
-          ({ sustenance }) => `
-${sustenance}`
-        )}`,
-        `${worker.sustenance_plazas.map(
-          ({ payment_key, plaza }) => `
-${payment_key}
-${plaza}`
-        )}`,
-        worker.specialty,
-        Object.keys(groupedSubjects).map(
-          (subject) => `
-${groupedSubjects[subject][0].subjects.name} 
-
-${Object.keys(groupData(groupedSubjects[subject], "group_id")).map(
-  (group) =>
-    ` (${calculateSemesterGroup(
-      groupData(groupedSubjects[subject], "group_id")[group][0].groups
-        .year_of_admission
-    )} ° "${
-      groupData(groupedSubjects[subject], "group_id")[group][0].groups.letter
-    }")`
-)} - ${groupedSubjects[subject][0].groups.degrees.code}
-`
-        ),
-        "",
-        `${numHours > 0 ? `NO. DE HORAS: ${numHours}` : ""}
-
-${totalHours > 2 ? `TOTAL DE HORAS: ${totalHours}` : ""}`,
-      ];
-    });
-
     doc.autoTable({
       styles: {
         halign: "left",
@@ -308,11 +217,146 @@ ${totalHours > 2 ? `TOTAL DE HORAS: ${totalHours}` : ""}`,
         0: { cellWidth: 50 },
       }, */
       head: [columns],
-      body,
+      body: workers.map((worker) => {
+        const groupedSubjects = groupData(
+          worker.schedule_assignments,
+          "subject_id"
+        );
+
+        let numHours = 0;
+        let totalHours = 2;
+
+        const countTeacherSchedules = worker.schedule_teachers.reduce(
+          (acc, item) => {
+            const trimmedAcitivity = item.activity.trim();
+
+            if (acc[trimmedAcitivity]) {
+              acc[trimmedAcitivity]++;
+            } else {
+              acc[trimmedAcitivity] = 1;
+            }
+            return acc;
+          },
+          {}
+        );
+
+        const uniqueTeacherSchedule = Object.keys(countTeacherSchedules).map(
+          (schedule) => {
+            return {
+              name: schedule,
+              quantity: countTeacherSchedules[schedule],
+            };
+          }
+        );
+
+        // Count num hours
+
+        Object.keys(groupedSubjects).map(
+          (subject) => (numHours += groupedSubjects[subject].length * 2)
+        );
+
+        // Count total hours
+
+        Object.keys(groupedSubjects).map(
+          (subject) => (totalHours += groupedSubjects[subject].length * 2)
+        );
+
+        uniqueTeacherSchedule.map(
+          (schedule) => (totalHours += schedule.quantity * 2)
+        );
+
+        // Create worker profile picture
+
+        let isThereAnImage = false;
+
+        const profilePicture = new Image();
+        if (worker.profile_picture) {
+          profilePicture.src = `https://xqaarjwmyclltbkaedvo.supabase.co/storage/v1/object/public/profile_pictures/${worker.profile_picture}`;
+          isThereAnImage = true;
+        }
+
+        // console.log(profilePicture.src);
+
+        return [
+          worker.id,
+          `${worker.name}
+  CALLE: ${worker.street}
+  ${worker.neighborhood}
+  TEL: ${worker.phone}
+  C.P: ${worker.post_code}
+  ${worker.city}, ${worker.state}
+  ${worker.email === null ? "" : worker.email}
+  ${worker.date_of_admissions.map(
+    (date) => ` ${date.type}: ${transformDate(date.date_of_admission)}`
+  )}`,
+          worker.RFC,
+          `${worker.sustenance_plazas.map(
+            ({ sustenance }) => `
+  ${sustenance}`
+          )}`,
+          `${worker.sustenance_plazas.map(
+            ({ payment_key, plaza }) => `
+  ${payment_key}
+  ${plaza}`
+          )}`,
+          worker.specialty,
+          Object.keys(groupedSubjects).map(
+            (subject) => `
+  ${groupedSubjects[subject][0].subjects.name} 
+  
+  ${Object.keys(groupData(groupedSubjects[subject], "group_id")).map(
+    (group) =>
+      ` (${calculateSemesterGroup(
+        groupData(groupedSubjects[subject], "group_id")[group][0].groups
+          .year_of_admission
+      )} ° "${
+        groupData(groupedSubjects[subject], "group_id")[group][0].groups.letter
+      }")`
+  )} - ${groupedSubjects[subject][0].groups.degrees.code}
+  `
+          ),
+          "",
+          `${numHours > 0 ? `NO. DE HORAS: ${numHours}` : ""}
+  
+  ${totalHours > 2 ? `TOTAL DE HORAS: ${totalHours}` : ""}`,
+          "",
+          "",
+          worker.observations,
+        ];
+      }),
       theme: "grid",
+      didDrawCell: function (data) {
+        if (data.column.index === 9 && data.cell.section === "body") {
+          if (data.row.index !== -1) {
+            const profilePicture = new Image();
+            let isThereAnImage = false;
+            if (workers[data.row.index].profile_picture) {
+              profilePicture.src = `https://xqaarjwmyclltbkaedvo.supabase.co/storage/v1/object/public/profile_pictures/${
+                workers[data.row.index].profile_picture
+              }`;
+              isThereAnImage = true;
+
+              var dim = data.cell.height - data.cell.padding("vertical");
+              const fileExtension = getFileExtension(
+                workers[data.row.index].profile_picture
+              );
+
+              doc.addImage(
+                profilePicture.src,
+                fileExtension.toUpperCase(),
+                data.cell.x + 2,
+                data.cell.y + 2,
+                20,
+                30
+              );
+              // console.log(profilePicture.src);
+            }
+          }
+        }
+      },
     });
 
-    doc.output("dataurlnewwindow");
+    doc.save("Plantilla");
   };
 
   console.log(workers);

@@ -12,6 +12,7 @@ import calculateSemesterGroup from "../helpers/calculateSemesterGroup";
 import TeacherSchedule from "../features/schedules/TeacherSchedule";
 import { useScheduleTeachers } from "../features/schedules/useScheduleTeachers";
 import WorkerSheetSemester from "../pdf/WorkerSheetSemester";
+import { useSemesters } from "../features/semesters/useSemesters";
 
 function ScheduleDashboard() {
   const { id } = useParams();
@@ -25,13 +26,15 @@ function ScheduleDashboard() {
     useScheduleAssignments();
   const { isLoading: isLoadingScheduleTeachers, scheduleTeachers } =
     useScheduleTeachers();
+  const { isLoading: isLoadingSemesters, semesters } = useSemesters();
 
   if (
     isLoadingWorkers ||
     isLoadingSubjects ||
     isLoadingGroups ||
     isLoadingScheduleAssignments ||
-    isLoadingScheduleTeachers
+    isLoadingScheduleTeachers ||
+    isLoadingSemesters
   )
     return <Spinner />;
 
@@ -49,6 +52,12 @@ function ScheduleDashboard() {
   const scheduleTeachersBySemester = scheduleTeachers.filter((schedule) => {
     return schedule.semester_id === +id;
   });
+
+  const currentSemester = semesters.filter((semester) => {
+    return semester.id === +id;
+  });
+
+  console.log(currentSemester);
 
   return (
     <Row>
@@ -76,7 +85,7 @@ function ScheduleDashboard() {
             scheduleAssignments={scheduleAssignmentsBySemester}
           />
         )}
-        <WorkerSheetSemester workers={workers} />
+        <WorkerSheetSemester semester={currentSemester} workers={workers} />
       </Row>
     </Row>
   );
