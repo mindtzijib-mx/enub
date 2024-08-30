@@ -5,42 +5,45 @@ import FormRow from "../../ui/FormRow";
 import Select from "../../ui/Select";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import calculateSemesterGroup from "../../helpers/calculateSemesterGroup";
 import { createScheduleAssignments } from "../../services/apiScheduleAssignments";
 import { useWorkers } from "../workers/useWorkers";
 import { useSubjects } from "../subjects/useSubjects";
 import { useGroups } from "../groups/useGroups";
+import { useEditScheduleAssignment } from "./useEditScheduleAssignments";
+import Spinner from "../../ui/Spinner";
+import { useCreateScheduleAssignments } from "./useCreateScheduleAssignments";
+import { SemesterContext } from "../../pages/ScheduleDashboard";
 
 function CreateEditScholarSchedule({
   semesterId,
   scheduleToEdit = {},
   onCloseModal,
 }) {
+  const { isEditing, editScheduleAssignment } = useEditScheduleAssignment();
+  const { isCreating, createScheduleAssignments } =
+    useCreateScheduleAssignments();
+  const isWorking = isCreating || isEditing;
+
+  const semesterData = useContext(SemesterContext);
+  // console.log(semesterData);
+
+  const { groups, workers, subjects } = semesterData;
+
   const { id: editId, ...editValues } = scheduleToEdit;
   const isEditSession = Boolean(editId);
 
-  const { isLoading: isLoadingWorkers, workers } = useWorkers();
-  const { isLoading: isLoadingSubjects, subjects } = useSubjects();
-  const { isLoading: isLoadingGroups, groups } = useGroups();
+  useEffect(() => {
+    if (isEditSession) {
+      selectingGroup(editValues.group_id);
+    }
+  }, []);
 
-  if (isLoadingWorkers || isLoadingSubjects || isLoadingGroups)
-    return <Spinner />;
-
-  const queryClient = useQueryClient();
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: isEditSession ? editValues : {},
   });
   const { errors } = formState;
-  const { mutate, isLoading: isCreating } = useMutation({
-    mutationFn: createScheduleAssignments,
-    onSuccess: () => {
-      toast.success("El registro se creó correctamente");
-      queryClient.invalidateQueries({ queryKey: ["scheduleAssignments"] });
-      reset();
-    },
-    onError: (err) => toast.error(err.message),
-  });
 
   const [filteredSubjects, setFilteredSubjects] = useState([]);
 
@@ -61,8 +64,33 @@ function CreateEditScholarSchedule({
   }
 
   function onSubmit(data) {
+    // console.log(data);
+
     data.semester_id = semesterId;
-    mutate(data);
+    if (isEditSession) {
+      delete data.groups;
+      delete data.semesters;
+      delete data.subjects;
+      delete data.workers;
+      editScheduleAssignment(
+        { newScheduleAssignment: { ...data }, id: editId },
+        {
+          onSuccess: (data) => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
+    } else
+      createScheduleAssignments(
+        { ...data },
+        {
+          onSuccess: (data) => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
   }
 
   return (
@@ -70,7 +98,7 @@ function CreateEditScholarSchedule({
       <FormRow label="Dia de la semana" error={errors?.weekday?.message}>
         <Select
           id="weekday"
-          disabled={isCreating}
+          disabled={isEditing}
           {...register("weekday", {
             required: "Este campo es requerido",
           })}
@@ -86,7 +114,7 @@ function CreateEditScholarSchedule({
       <FormRow label="Grupo Escolar" error={errors?.group_id?.message}>
         <Select
           id="group_id"
-          disabled={isCreating}
+          disabled={isEditing}
           {...register("group_id", {
             required: "Este campo es requerido",
           })}
@@ -104,7 +132,7 @@ function CreateEditScholarSchedule({
       <FormRow label="Asignatura" error={errors?.subject_id?.message}>
         <Select
           id="subject_id"
-          disabled={isCreating}
+          disabled={isEditing}
           {...register("subject_id", {
             required: "Este campo es requerido",
           })}
@@ -121,7 +149,7 @@ function CreateEditScholarSchedule({
       <FormRow label="Hora de inicio" error={errors?.start_time?.message}>
         <Select
           id="start_time"
-          disabled={isCreating}
+          disabled={isEditing}
           {...register("start_time", {
             required: "Este campo es requerido",
           })}
@@ -136,7 +164,7 @@ function CreateEditScholarSchedule({
       <FormRow label="Hora Fin" error={errors?.end_time?.message}>
         <Select
           id="end_time"
-          disabled={isCreating}
+          disabled={isEditing}
           {...register("end_time", {
             required: "Este campo es requerido",
           })}
@@ -151,7 +179,7 @@ function CreateEditScholarSchedule({
       <FormRow label="Maestro" error={errors?.worker_id?.message}>
         <Select
           id="worker_id"
-          disabled={isCreating}
+          disabled={isEditing}
           {...register("worker_id", {
             required: "Este campo es requerido",
           })}
@@ -172,7 +200,7 @@ function CreateEditScholarSchedule({
         >
           Cancelar
         </Button>
-        <Button>Agregar Horario</Button>
+        <Button>{isEditSession ? "Editar Horario" : "Añadir Horario"}</Button>
       </FormRow>
     </Form>
   );

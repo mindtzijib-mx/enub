@@ -4,6 +4,7 @@ import Row from "../../ui/Row";
 import CreateScholarSchedule from "./CreateScholarSchedule";
 import ShowScholarSchedule from "./ShowScholarSchedule";
 import Modal from "../../ui/Modal";
+import CreateEditScholarSchedule from "./CreateEditScholarSchedule";
 
 function ScholarSchedule({
   workers,
@@ -22,7 +23,7 @@ function ScholarSchedule({
           <Button variation="secondary">Agregar horario escolar</Button>
         </Modal.Open>
         <Modal.Window name="scholar-schedule-form">
-          <CreateScholarSchedule
+          <CreateEditScholarSchedule
             workers={workers}
             subjects={subjects}
             groups={groups}

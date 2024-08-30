@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { createContext, useState } from "react";
 import Button from "../ui/Button";
 import Row from "../ui/Row";
 import ScholarSchedule from "../features/schedules/ScholarSchedule";
@@ -13,6 +13,8 @@ import TeacherSchedule from "../features/schedules/TeacherSchedule";
 import { useScheduleTeachers } from "../features/schedules/useScheduleTeachers";
 import WorkerSheetSemester from "../pdf/WorkerSheetSemester";
 import { useSemesters } from "../features/semesters/useSemesters";
+
+export const SemesterContext = createContext(null);
 
 function ScheduleDashboard() {
   const { id } = useParams();
@@ -43,6 +45,11 @@ function ScheduleDashboard() {
     return calculateSemesterGroup(group.year_of_admission) <= 8;
   });
 
+  const currentWorkers = workers.filter((worker) => {
+    // if worker is active
+    return worker.status === 1;
+  });
+
   const scheduleAssignmentsBySemester = scheduleAssignments.filter(
     (schedule) => {
       return schedule.semester_id === +id;
@@ -60,34 +67,38 @@ function ScheduleDashboard() {
   console.log(currentSemester);
 
   return (
-    <Row>
+    <SemesterContext.Provider
+      value={{ groups: currentGroups, workers: currentWorkers, subjects }}
+    >
       <Row>
-        <Button onClick={() => setShowScholarSchedule(!showScholarSchedule)}>
-          Gestionar horario escolar
-        </Button>
-        {showScholarSchedule && (
-          <ScholarSchedule
-            workers={workers}
-            subjects={subjects}
-            groups={currentGroups}
-            semesterId={id}
-            scheduleAssignments={scheduleAssignmentsBySemester}
-          />
-        )}
-        <Button onClick={() => setShowTeacherSchedule(!showTeacherSchedule)}>
-          Gestionar horario del maestro
-        </Button>
-        {showTeacherSchedule && (
-          <TeacherSchedule
-            workers={workers}
-            semesterId={id}
-            scheduleTeachers={scheduleTeachersBySemester}
-            scheduleAssignments={scheduleAssignmentsBySemester}
-          />
-        )}
-        <WorkerSheetSemester semester={currentSemester} workers={workers} />
+        <Row>
+          <Button onClick={() => setShowScholarSchedule(!showScholarSchedule)}>
+            Gestionar horario escolar
+          </Button>
+          {showScholarSchedule && (
+            <ScholarSchedule
+              workers={workers}
+              subjects={subjects}
+              groups={currentGroups}
+              semesterId={id}
+              scheduleAssignments={scheduleAssignmentsBySemester}
+            />
+          )}
+          <Button onClick={() => setShowTeacherSchedule(!showTeacherSchedule)}>
+            Gestionar horario del maestro
+          </Button>
+          {showTeacherSchedule && (
+            <TeacherSchedule
+              workers={workers}
+              semesterId={id}
+              scheduleTeachers={scheduleTeachersBySemester}
+              scheduleAssignments={scheduleAssignmentsBySemester}
+            />
+          )}
+          <WorkerSheetSemester semester={currentSemester} workers={workers} />
+        </Row>
       </Row>
-    </Row>
+    </SemesterContext.Provider>
   );
 }
 

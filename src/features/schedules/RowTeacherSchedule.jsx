@@ -51,9 +51,22 @@ function RowTeacherSchedule({ schedulesScholar, scheduleTeacher }) {
     <>
       <TableRow role="row">
         <p>7:00 - 8:50</p>
-        <p>
-          <b>Homenaje / Tutoria</b>
-        </p>
+        <div>
+          <p>
+            <b>Homenaje / Tutoria</b>
+          </p>
+          <HourScheduleSubjectGroup
+            schedules={schedulesScholar}
+            weekday="Lunes"
+            startTime="07:00:00"
+          />
+          <HourScheduleSubjectTeacher
+            schedules={scheduleTeacher}
+            weekday="Lunes"
+            startTime="07:00:00"
+          />
+        </div>
+
         <div>
           <HourScheduleSubjectGroup
             schedules={schedulesScholar}

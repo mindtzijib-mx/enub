@@ -6,6 +6,7 @@ import Modal from "../../ui/Modal";
 import CreateScholarSchedule from "./EditScholarSchedule";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useDeleteScheduleAssignment } from "./useDeleteScheduleAssignment";
+import CreateEditScholarSchedule from "./CreateEditScholarSchedule";
 
 function HourScheduleSubjectGroup({ schedules, weekday, startTime }) {
   const { isDeleting, deleteScheduleAssignment } =
@@ -34,7 +35,10 @@ function HourScheduleSubjectGroup({ schedules, weekday, startTime }) {
                 <FaEdit />
               </Modal.Open>
               <Modal.Window name="scholar-schedule-edit-form">
-                <CreateScholarSchedule scheduleToEdit={schedule} />
+                <CreateEditScholarSchedule
+                  scheduleToEdit={schedule}
+                  onCloseModal={() => setEditModal(false)}
+                />
               </Modal.Window>
             </Modal>
             &nbsp; &nbsp; &nbsp;
