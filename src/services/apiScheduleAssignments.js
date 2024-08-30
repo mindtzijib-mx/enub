@@ -26,6 +26,26 @@ export async function createScheduleAssignments(newScheduleAssignment) {
   return data;
 }
 
+export async function createEditScheduleAssignments(newScheduleAssignment, id) {
+  // 1. Create/edit State Role
+  let query = supabase.from("schedule_assignments");
+
+  // A) CREATE
+  if (!id) query = query.insert([newScheduleAssignment]);
+
+  // B) EDIT
+  if (id) query = query.update({ ...newScheduleAssignment }).eq("id", id);
+
+  const { data, error } = await query.select().single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("El registro no pudo ser actualizado");
+  }
+
+  return data;
+}
+
 export async function deleteScheduleAssignment(id) {
   const { data, error } = await supabase
     .from("schedule_assignments")

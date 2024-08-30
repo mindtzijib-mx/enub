@@ -37,6 +37,22 @@ const groupData = (array, key) => {
 };
 
 function WorkerSheetSemester({ workers, semester }) {
+  const activeWorkers = workers.filter((worker) => {
+    return worker.status === 1;
+  });
+
+  const teacherWorkers = activeWorkers.filter((worker) => {
+    return worker.type_worker === "Maestro";
+  });
+
+  const administrativeWorkers = activeWorkers.filter((worker) => {
+    return worker.type_worker === "Administrativo";
+  });
+
+  const hiringWorkers = activeWorkers.filter((worker) => {
+    return worker.type_worker === "Contratacion";
+  });
+
   const { isLoading: isLoadingRoles, roles } = useRoles();
 
   const generatePDF = () => {
@@ -217,7 +233,7 @@ function WorkerSheetSemester({ workers, semester }) {
         0: { cellWidth: 50 },
       }, */
       head: [columns],
-      body: workers.map((worker) => {
+      body: teacherWorkers.map((worker) => {
         const groupedSubjects = groupData(
           worker.schedule_assignments,
           "subject_id"
@@ -264,16 +280,6 @@ function WorkerSheetSemester({ workers, semester }) {
         uniqueTeacherSchedule.map(
           (schedule) => (totalHours += schedule.quantity * 2)
         );
-
-        // Create worker profile picture
-
-        let isThereAnImage = false;
-
-        const profilePicture = new Image();
-        if (worker.profile_picture) {
-          profilePicture.src = `https://xqaarjwmyclltbkaedvo.supabase.co/storage/v1/object/public/profile_pictures/${worker.profile_picture}`;
-          isThereAnImage = true;
-        }
 
         // console.log(profilePicture.src);
 
@@ -330,15 +336,333 @@ function WorkerSheetSemester({ workers, semester }) {
           if (data.row.index !== -1) {
             const profilePicture = new Image();
             let isThereAnImage = false;
-            if (workers[data.row.index].profile_picture) {
+            if (teacherWorkers[data.row.index].profile_picture) {
               profilePicture.src = `https://xqaarjwmyclltbkaedvo.supabase.co/storage/v1/object/public/profile_pictures/${
-                workers[data.row.index].profile_picture
+                teacherWorkers[data.row.index].profile_picture
               }`;
               isThereAnImage = true;
 
               var dim = data.cell.height - data.cell.padding("vertical");
               const fileExtension = getFileExtension(
-                workers[data.row.index].profile_picture
+                teacherWorkers[data.row.index].profile_picture
+              );
+
+              doc.addImage(
+                profilePicture.src,
+                fileExtension.toUpperCase(),
+                data.cell.x + 2,
+                data.cell.y + 2,
+                20,
+                30
+              );
+              // console.log(profilePicture.src);
+            }
+          }
+        }
+      },
+    });
+
+    doc.autoTable({
+      styles: {
+        halign: "center",
+        font: "Montserrat-Italic",
+        fontStyle: "italic",
+        fontSize: 7,
+      },
+      headStyles: {
+        fillColor: [0, 0, 0],
+        font: "Montserrat-Bold",
+      },
+      head: [["PERSONAL ADMINISTRATIVO Y DE APOYO A LA EDUCACION"]],
+      theme: "grid",
+    });
+
+    doc.autoTable({
+      styles: {
+        halign: "left",
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 7,
+      },
+      headStyles: {
+        fillColor: [0, 0, 0],
+        font: "Montserrat-Bold",
+      },
+      /* columnStyles: {
+        0: { cellWidth: 50 },
+      }, */
+      head: [columns],
+      body: administrativeWorkers.map((worker) => {
+        const groupedSubjects = groupData(
+          worker.schedule_assignments,
+          "subject_id"
+        );
+
+        let numHours = 0;
+        let totalHours = 2;
+
+        const countTeacherSchedules = worker.schedule_teachers.reduce(
+          (acc, item) => {
+            const trimmedAcitivity = item.activity.trim();
+
+            if (acc[trimmedAcitivity]) {
+              acc[trimmedAcitivity]++;
+            } else {
+              acc[trimmedAcitivity] = 1;
+            }
+            return acc;
+          },
+          {}
+        );
+
+        const uniqueTeacherSchedule = Object.keys(countTeacherSchedules).map(
+          (schedule) => {
+            return {
+              name: schedule,
+              quantity: countTeacherSchedules[schedule],
+            };
+          }
+        );
+
+        // Count num hours
+
+        Object.keys(groupedSubjects).map(
+          (subject) => (numHours += groupedSubjects[subject].length * 2)
+        );
+
+        // Count total hours
+
+        Object.keys(groupedSubjects).map(
+          (subject) => (totalHours += groupedSubjects[subject].length * 2)
+        );
+
+        uniqueTeacherSchedule.map(
+          (schedule) => (totalHours += schedule.quantity * 2)
+        );
+
+        // console.log(profilePicture.src);
+
+        return [
+          worker.id,
+          `${worker.name}
+  CALLE: ${worker.street}
+  ${worker.neighborhood}
+  TEL: ${worker.phone}
+  C.P: ${worker.post_code}
+  ${worker.city}, ${worker.state}
+  ${worker.email === null ? "" : worker.email}
+  ${worker.date_of_admissions.map(
+    (date) => ` ${date.type}: ${transformDate(date.date_of_admission)}`
+  )}`,
+          worker.RFC,
+          `${worker.sustenance_plazas.map(
+            ({ sustenance }) => `
+  ${sustenance}`
+          )}`,
+          `${worker.sustenance_plazas.map(
+            ({ payment_key, plaza }) => `
+  ${payment_key}
+  ${plaza}`
+          )}`,
+          worker.specialty,
+          Object.keys(groupedSubjects).map(
+            (subject) => `
+  ${groupedSubjects[subject][0].subjects.name} 
+  
+  ${Object.keys(groupData(groupedSubjects[subject], "group_id")).map(
+    (group) =>
+      ` (${calculateSemesterGroup(
+        groupData(groupedSubjects[subject], "group_id")[group][0].groups
+          .year_of_admission
+      )} ° "${
+        groupData(groupedSubjects[subject], "group_id")[group][0].groups.letter
+      }")`
+  )} - ${groupedSubjects[subject][0].groups.degrees.code}
+  `
+          ),
+          "",
+          `${numHours > 0 ? `NO. DE HORAS: ${numHours}` : ""}
+  
+  ${totalHours > 2 ? `TOTAL DE HORAS: ${totalHours}` : ""}`,
+          "",
+          "",
+          worker.observations,
+        ];
+      }),
+      theme: "grid",
+      didDrawCell: function (data) {
+        if (data.column.index === 9 && data.cell.section === "body") {
+          if (data.row.index !== -1) {
+            const profilePicture = new Image();
+            let isThereAnImage = false;
+            if (administrativeWorkers[data.row.index].profile_picture) {
+              profilePicture.src = `https://xqaarjwmyclltbkaedvo.supabase.co/storage/v1/object/public/profile_pictures/${
+                administrativeWorkers[data.row.index].profile_picture
+              }`;
+              isThereAnImage = true;
+
+              var dim = data.cell.height - data.cell.padding("vertical");
+              const fileExtension = getFileExtension(
+                administrativeWorkers[data.row.index].profile_picture
+              );
+
+              doc.addImage(
+                profilePicture.src,
+                fileExtension.toUpperCase(),
+                data.cell.x + 2,
+                data.cell.y + 2,
+                20,
+                30
+              );
+              // console.log(profilePicture.src);
+            }
+          }
+        }
+      },
+    });
+
+    doc.autoTable({
+      styles: {
+        halign: "center",
+        font: "Montserrat-Italic",
+        fontStyle: "italic",
+        fontSize: 7,
+      },
+      headStyles: {
+        fillColor: [0, 0, 0],
+        font: "Montserrat-Bold",
+      },
+      head: [["CONTRATACIÓN"]],
+      theme: "grid",
+    });
+
+    doc.autoTable({
+      styles: {
+        halign: "left",
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 7,
+      },
+      headStyles: {
+        fillColor: [0, 0, 0],
+        font: "Montserrat-Bold",
+      },
+      /* columnStyles: {
+        0: { cellWidth: 50 },
+      }, */
+      head: [columns],
+      body: hiringWorkers.map((worker) => {
+        const groupedSubjects = groupData(
+          worker.schedule_assignments,
+          "subject_id"
+        );
+
+        let numHours = 0;
+        let totalHours = 2;
+
+        const countTeacherSchedules = worker.schedule_teachers.reduce(
+          (acc, item) => {
+            const trimmedAcitivity = item.activity.trim();
+
+            if (acc[trimmedAcitivity]) {
+              acc[trimmedAcitivity]++;
+            } else {
+              acc[trimmedAcitivity] = 1;
+            }
+            return acc;
+          },
+          {}
+        );
+
+        const uniqueTeacherSchedule = Object.keys(countTeacherSchedules).map(
+          (schedule) => {
+            return {
+              name: schedule,
+              quantity: countTeacherSchedules[schedule],
+            };
+          }
+        );
+
+        // Count num hours
+
+        Object.keys(groupedSubjects).map(
+          (subject) => (numHours += groupedSubjects[subject].length * 2)
+        );
+
+        // Count total hours
+
+        Object.keys(groupedSubjects).map(
+          (subject) => (totalHours += groupedSubjects[subject].length * 2)
+        );
+
+        uniqueTeacherSchedule.map(
+          (schedule) => (totalHours += schedule.quantity * 2)
+        );
+
+        // console.log(profilePicture.src);
+
+        return [
+          worker.id,
+          `${worker.name}
+  CALLE: ${worker.street}
+  ${worker.neighborhood}
+  TEL: ${worker.phone}
+  C.P: ${worker.post_code}
+  ${worker.city}, ${worker.state}
+  ${worker.email === null ? "" : worker.email}
+  ${worker.date_of_admissions.map(
+    (date) => ` ${date.type}: ${transformDate(date.date_of_admission)}`
+  )}`,
+          worker.RFC,
+          `${worker.sustenance_plazas.map(
+            ({ sustenance }) => `
+  ${sustenance}`
+          )}`,
+          `${worker.sustenance_plazas.map(
+            ({ payment_key, plaza }) => `
+  ${payment_key}
+  ${plaza}`
+          )}`,
+          worker.specialty,
+          Object.keys(groupedSubjects).map(
+            (subject) => `
+  ${groupedSubjects[subject][0].subjects.name} 
+  
+  ${Object.keys(groupData(groupedSubjects[subject], "group_id")).map(
+    (group) =>
+      ` (${calculateSemesterGroup(
+        groupData(groupedSubjects[subject], "group_id")[group][0].groups
+          .year_of_admission
+      )} ° "${
+        groupData(groupedSubjects[subject], "group_id")[group][0].groups.letter
+      }")`
+  )} - ${groupedSubjects[subject][0].groups.degrees.code}
+  `
+          ),
+          "",
+          `${numHours > 0 ? `NO. DE HORAS: ${numHours}` : ""}
+  
+  ${totalHours > 2 ? `TOTAL DE HORAS: ${totalHours}` : ""}`,
+          "",
+          "",
+          worker.observations,
+        ];
+      }),
+      theme: "grid",
+      didDrawCell: function (data) {
+        if (data.column.index === 9 && data.cell.section === "body") {
+          if (data.row.index !== -1) {
+            const profilePicture = new Image();
+            let isThereAnImage = false;
+            if (hiringWorkers[data.row.index].profile_picture) {
+              profilePicture.src = `https://xqaarjwmyclltbkaedvo.supabase.co/storage/v1/object/public/profile_pictures/${
+                hiringWorkers[data.row.index].profile_picture
+              }`;
+              isThereAnImage = true;
+
+              var dim = data.cell.height - data.cell.padding("vertical");
+              const fileExtension = getFileExtension(
+                hiringWorkers[data.row.index].profile_picture
               );
 
               doc.addImage(
@@ -358,8 +682,6 @@ function WorkerSheetSemester({ workers, semester }) {
 
     doc.save("Plantilla");
   };
-
-  console.log(workers);
 
   return <Button onClick={generatePDF}>Imprimir plantilla horaria</Button>;
 }

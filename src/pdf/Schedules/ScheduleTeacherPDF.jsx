@@ -11,10 +11,12 @@ import { useStateRoles } from "../../features/stateRoles/useStateRoles.js";
 import filterHourGroup from "./filterHourGroup.js";
 import filterHourActivity from "./filterHourActivity.js";
 import capitalizeName from "../../helpers/capitalizeFirstLetter.js";
+import { useUtilities } from "../../features/otherData/useUtilities.js";
 
 function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
   const { isLoading: isLoadingStateRoles, stateRoles } = useStateRoles();
+  const { isLoading: isLoadingUtilities, utilities } = useUtilities();
 
   let hasExtraHours = false;
 
@@ -81,7 +83,7 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
       },
       didDrawPage: function (data) {
         // Footer
-        doc.setFontSize(10);
+        doc.setFontSize(8);
 
         // jsPDF 1.4+ uses getHeight, <1.4 uses .height
         var pageSize = doc.internal.pageSize;
@@ -322,13 +324,8 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
       theme: "grid",
     });
 
-    // Get current date
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString("es-ES", options);
-
     const infoSchool = [
-      ["", "", `Balancán, Tabasco a ${formattedDate}`],
+      ["", "", `Balancán, Tabasco a ${utilities[0].value}`],
       [
         {
           content: "Encargado De Despacho De La Dirección De La Escuela",
@@ -378,7 +375,8 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
     doc.output("dataurlnewwindow");
   };
 
-  if (isLoadingRoles || isLoadingStateRoles) return <Spinner />;
+  if (isLoadingRoles || isLoadingStateRoles || isLoadingUtilities)
+    return <Spinner />;
 
   return (
     <Button variation="secondary" onClick={generatePDF}>

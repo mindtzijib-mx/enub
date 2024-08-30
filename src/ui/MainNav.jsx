@@ -5,7 +5,7 @@ import { useState } from "react";
 import { IoIosArrowDropdownCircle, IoIosArrowDropright } from "react-icons/io";
 import { FaCalendar, FaTable } from "react-icons/fa";
 import { MdLibraryBooks } from "react-icons/md";
-import { FaUserGear } from "react-icons/fa6";
+import { FaPerson, FaUserGear } from "react-icons/fa6";
 import { RiGovernmentFill } from "react-icons/ri";
 
 const NavList = styled.ul`
@@ -93,6 +93,12 @@ function MainNav() {
             <StyledNavLink to="/degrees">
               <HiAcademicCap />
               <span>Licenciaturas</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/workers">
+              <FaPerson />
+              <span>Trabajadores</span>
             </StyledNavLink>
           </li>
           <li>

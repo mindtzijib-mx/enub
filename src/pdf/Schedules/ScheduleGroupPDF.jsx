@@ -11,10 +11,12 @@ import Spinner from "../../ui/Spinner.jsx";
 import filterHour from "./filterHour.js";
 import calculateSemesterGroup from "../../helpers/calculateSemesterGroup.js";
 import capitalizeName from "../../helpers/capitalizeFirstLetter.js";
+import { useUtilities } from "../../features/otherData/useUtilities.js";
 
 function ScheduleGroupPDF({ schedules }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
   const { isLoading: isLoadingStateRoles, stateRoles } = useStateRoles();
+  const { isLoading: isLoadingUtilities, utilities } = useUtilities();
 
   const generatePDF = () => {
     const doc = new jsPDF("p", "px", "letter");
@@ -101,9 +103,6 @@ function ScheduleGroupPDF({ schedules }) {
         });
       },
       didDrawPage: function (data) {
-        // Footer
-        doc.setFontSize(10);
-
         // jsPDF 1.4+ uses getHeight, <1.4 uses .height
         var pageSize = doc.internal.pageSize;
         var pageHeight = pageSize.height
@@ -111,6 +110,7 @@ function ScheduleGroupPDF({ schedules }) {
           : pageSize.getHeight();
 
         doc.setFont("Montserrat-Regular");
+        doc.setFontSize(8);
         doc.text("Periférico S/N", data.settings.margin.left, pageHeight - 60);
         doc.text(
           "Col. Las Flores. CP. 86930",
@@ -169,12 +169,8 @@ function ScheduleGroupPDF({ schedules }) {
       theme: "grid",
     });
 
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString("es-ES", options);
-
     const infoSchool = [
-      ["", "", `Balancán, Tabasco a ${formattedDate}`],
+      ["", "", `Balancán, Tabasco a ${utilities[0].value}`],
       [
         {
           content: "Encargado De Despacho De La Dirección De La Escuela",
@@ -226,7 +222,8 @@ function ScheduleGroupPDF({ schedules }) {
 
   // console.log(schedules);
 
-  if (isLoadingRoles || isLoadingStateRoles) return <Spinner />;
+  if (isLoadingRoles || isLoadingStateRoles || isLoadingUtilities)
+    return <Spinner />;
 
   return (
     <Button variation="secondary" onClick={generatePDF}>

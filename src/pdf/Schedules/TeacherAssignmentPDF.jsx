@@ -70,7 +70,7 @@ function TeacherAssignmentPDF({
       },
       didDrawPage: function (data) {
         // Footer
-        doc.setFontSize(10);
+        doc.setFontSize(8);
 
         // jsPDF 1.4+ uses getHeight, <1.4 uses .height
         var pageSize = doc.internal.pageSize;
@@ -170,12 +170,36 @@ function TeacherAssignmentPDF({
             styles: { font: "Montserrat-Bold" },
           },
         ],
+      ],
+      theme: "plain",
+      startY: doc.lastAutoTable.finalY - 4,
+    });
+
+    doc.autoTable({
+      styles: {
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 10,
+      },
+      body: [
         [
           {
             content: "DOCENTE DE LA ESCUELA NORMAL URBANA",
             styles: { font: "Montserrat-Bold" },
           },
         ],
+      ],
+      theme: "plain",
+      startY: doc.lastAutoTable.finalY - 4,
+    });
+
+    doc.autoTable({
+      styles: {
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 10,
+      },
+      body: [
         [
           {
             content: "PRESENTE",

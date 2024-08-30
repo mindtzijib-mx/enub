@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import Spinner from "../../ui/Spinner";
 import SubjectRow from "./SubjectRow";
 import { useSubjects } from "./useSubjects";
