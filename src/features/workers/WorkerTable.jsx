@@ -9,7 +9,7 @@ function WorkerTable() {
   if (isLoading) return <Spinner />;
 
   return (
-    <Table columns="1fr 1fr 1fr 1fr 1fr">
+    <Table columns="0.3fr 3fr 1fr 1fr 1fr">
       <Table.Header>
         <div>Foto</div>
         <div>Nombre</div>

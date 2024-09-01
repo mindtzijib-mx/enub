@@ -14,3 +14,23 @@ export async function getWorkers() {
 
   return data;
 }
+
+export async function createEditWorkers(newWorker, id) {
+  // 1. Create/edit State Role
+  let query = supabase.from("workers");
+
+  // A) CREATE
+  if (!id) query = query.insert([newWorker]);
+
+  // B) EDIT
+  if (id) query = query.update({ ...newWorker }).eq("id", id);
+
+  const { data, error } = await query.select().single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("El registro no pudo ser actualizado");
+  }
+
+  return data;
+}
