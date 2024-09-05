@@ -109,40 +109,24 @@ function TeacherAssignmentPDF({
     const today = new Date();
     const formattedDate = today.toLocaleDateString("es-ES", options);
 
-    const infoDoc = [
-      [
-        {
-          content: "DEPENDENCIA: ESCUELA NORMAL URBANA",
-          styles: { font: "Montserrat-Bold" },
-        },
+    doc.autoTable({
+      styles: {
+        halign: "right",
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 9,
+      },
+      body: [
+        [
+          {
+            content: "DEPENDENCIA: ESCUELA NORMAL URBANA",
+            styles: { font: "Montserrat-Bold" },
+          },
+        ],
       ],
-
-      [
-        {
-          content: "SECCIÓN: ADMINISTRACIÓN",
-          styles: { font: "Montserrat-Bold" },
-        },
-      ],
-      [
-        {
-          content: "MESA: SUBDIRECCIÓN ACADEMICA.",
-          styles: { font: "Montserrat-Bold" },
-        },
-      ],
-      [
-        {
-          content: `OFICIO Nº: SDAC/ENU/085/${new Date().getFullYear()}`,
-          styles: { font: "Montserrat-Bold" },
-        },
-      ],
-      [
-        {
-          content: "Asunto: Asignación de carga horaria",
-          styles: { font: "Montserrat-Bold" },
-        },
-      ],
-      [`Balancán, Tabasco a ${formattedDate}`],
-    ];
+      theme: "plain",
+      startY: doc.lastAutoTable.finalY,
+    });
 
     doc.autoTable({
       styles: {
@@ -151,9 +135,85 @@ function TeacherAssignmentPDF({
         font: "Montserrat-Regular",
         fontSize: 9,
       },
-      body: infoDoc,
+      body: [
+        [
+          {
+            content: "SECCIÓN: ADMINISTRACIÓN",
+            styles: { font: "Montserrat-Bold" },
+          },
+        ],
+      ],
       theme: "plain",
-      startY: doc.lastAutoTable.finalY,
+      startY: doc.lastAutoTable.finalY - 8,
+    });
+
+    doc.autoTable({
+      styles: {
+        halign: "right",
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 9,
+      },
+      body: [
+        [
+          {
+            content: "MESA: SUBDIRECCIÓN ACADEMICA.",
+            styles: { font: "Montserrat-Bold" },
+          },
+        ],
+      ],
+      theme: "plain",
+      startY: doc.lastAutoTable.finalY - 8,
+    });
+
+    doc.autoTable({
+      styles: {
+        halign: "right",
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 9,
+      },
+      body: [
+        [
+          {
+            content: `OFICIO Nº: SDAC/ENU/085/${new Date().getFullYear()}`,
+            styles: { font: "Montserrat-Bold" },
+          },
+        ],
+      ],
+      theme: "plain",
+      startY: doc.lastAutoTable.finalY - 8,
+    });
+
+    doc.autoTable({
+      styles: {
+        halign: "right",
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 9,
+      },
+      body: [
+        [
+          {
+            content: "Asunto: Asignación de carga horaria",
+            styles: { font: "Montserrat-Bold" },
+          },
+        ],
+      ],
+      theme: "plain",
+      startY: doc.lastAutoTable.finalY - 8,
+    });
+
+    doc.autoTable({
+      styles: {
+        halign: "right",
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 9,
+      },
+      body: [[`Balancán, Tabasco a ${formattedDate}`]],
+      theme: "plain",
+      startY: doc.lastAutoTable.finalY - 8,
     });
 
     // Info of teacher
@@ -190,7 +250,7 @@ function TeacherAssignmentPDF({
         ],
       ],
       theme: "plain",
-      startY: doc.lastAutoTable.finalY - 4,
+      startY: doc.lastAutoTable.finalY - 8,
     });
 
     doc.autoTable({
@@ -208,19 +268,17 @@ function TeacherAssignmentPDF({
         ],
       ],
       theme: "plain",
-      startY: doc.lastAutoTable.finalY - 3,
+      startY: doc.lastAutoTable.finalY - 8,
     });
 
     doc.autoTable({
       styles: {
-        align: "justify",
-        valign: "middle",
-        font: "Montserrat-Regular",
+        halign: "justify",
         fontSize: 10,
       },
       body: [
         [
-          "En apego de los lineaminetos que establecen la regulación de las Actividades sustantivas que debe realizar todo profesor adscrito a una Institución de Educación Superior (IES), y con base a su nombramiento como profesor de la Escuela Normal Urbana, en cumplimiento a las atribuciones conferidas a esta subdirección, me permito hacer la asignación de su carga horaria para el presente semestre. Misma que deberá desempeñar con el sentido de responsbilidad y compromiso que siempre ha demostrado en cada una de las tareas que se le han  encomendado.",
+          "En apego de los lineamientos que establecen la regulación de las Actividades sustantivas que debe realizar todo profesor adscrito a una Institución de Educación Superior (IES), y con base a su nombramiento como profesor de la Escuela Normal Urbana, en cumplimiento a las atribuciones conferidas a esta subdirección, me permito hacer la asignación de su carga horaria para el presente semestre. Misma que deberá desempeñar con el sentido de responsabilidad y compromiso que siempre ha demostrado en cada una de las tareas que se le han encomendado.",
         ],
       ],
       theme: "plain",
@@ -377,11 +435,20 @@ function TeacherAssignmentPDF({
         font: "Montserrat-Regular",
         fontSize: 10,
       },
-      body: [
-        [capitalizeName(roles[0].workers.name)],
-        ["Subdirector Académico"],
-      ],
+      body: [[capitalizeName(roles[0].workers.name)]],
       theme: "plain",
+    });
+
+    doc.autoTable({
+      styles: {
+        halign: "center",
+        valign: "middle",
+        font: "Montserrat-Regular",
+        fontSize: 10,
+      },
+      body: [["Subdirector Académico"]],
+      theme: "plain",
+      startY: doc.lastAutoTable.finalY - 8,
     });
 
     doc.output("dataurlnewwindow");
