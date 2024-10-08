@@ -10,3 +10,23 @@ export async function getRoles() {
 
   return data;
 }
+
+export async function createEditRoles(newRole, id) {
+  // 1. Create/edit State Role
+  let query = supabase.from("roles");
+
+  // A) CREATE
+  if (!id) query = query.insert([newRole]);
+
+  // B) EDIT
+  if (id) query = query.update({ ...newRole }).eq("id", id);
+
+  const { data, error } = await query.select().single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("El registro no pudo ser actualizado");
+  }
+
+  return data;
+}

@@ -15,6 +15,7 @@ import { Toaster } from "react-hot-toast";
 import StateRoles from "./pages/Records/StateRoles";
 import Others from "./pages/Records/Others";
 import Workers from "./pages/Records/Workers";
+import Roles from "./pages/Records/Roles";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,7 @@ function App() {
               <Route path="groups" element={<Groups />} />
               <Route path="study-programs" element={<StudyPrograms />} />
               <Route path="state-roles" element={<StateRoles />} />
+              <Route path="roles" element={<Roles />} />
               <Route path="others" element={<Others />} />
               <Route path="semesters" element={<Semesters />} />
               <Route path="workers" element={<Workers />} />
