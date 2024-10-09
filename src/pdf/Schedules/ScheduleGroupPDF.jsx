@@ -173,7 +173,7 @@ function ScheduleGroupPDF({ schedules }) {
       ["", "", `Balancán, Tabasco a ${utilities[0].value}`],
       [
         {
-          content: "Encargado De Despacho De La Dirección De La Escuela",
+          content: roles[1].role,
           styles: { font: "Montserrat-Bold" },
         },
         {
@@ -182,7 +182,7 @@ function ScheduleGroupPDF({ schedules }) {
           styles: { halign: "center" },
         },
         {
-          content: "Subdirección Académica",
+          content: roles[0].role,
           styles: { font: "Montserrat-Bold" },
         },
       ],
