@@ -4,6 +4,7 @@ import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useDeleteScheduleAssignment } from "./useDeleteScheduleAssignment";
 import capitalizeName from "../../helpers/capitalizeFirstLetter";
+import CreateEditScholarSchedule from "./CreateEditScholarSchedule";
 
 function HourScheduleSubject({ schedules, weekday, startTime }) {
   const { isDeleting, deleteScheduleAssignment } =
@@ -22,19 +23,31 @@ function HourScheduleSubject({ schedules, weekday, startTime }) {
         <br />
         <em>{capitalizeName(subjectHour[0].workers.name)}</em>
         <br />
-        <FaEdit onClick={() => setEditModal(!editModal)} />
+        <Modal>
+          <Modal.Open opens="scholar-schedule-edit-form">
+            <FaEdit />
+          </Modal.Open>
+          <Modal.Window name="scholar-schedule-edit-form">
+            <CreateEditScholarSchedule
+              scheduleToEdit={subjectHour[0]}
+              onCloseModal={() => setEditModal(false)}
+            />
+          </Modal.Window>
+        </Modal>
         &nbsp; &nbsp; &nbsp;
-        <FaTrash onClick={() => setDeleteModal(!deleteModal)} />
-        {deleteModal && (
-          <Modal onClose={() => setDeleteModal(false)}>
+        <Modal>
+          <Modal.Open opens="scholar-schedule-delete-form">
+            <FaTrash />
+          </Modal.Open>
+          <Modal.Window name="scholar-schedule-delete-form">
             <ConfirmDelete
               resourceName="horario"
               disabled={isDeleting}
               onCloseModal={() => setDeleteModal(false)}
               onConfirm={() => deleteScheduleAssignment(subjectHour[0].id)}
             />
-          </Modal>
-        )}
+          </Modal.Window>
+        </Modal>
       </>
     );
 
