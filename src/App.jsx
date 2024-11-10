@@ -16,6 +16,8 @@ import StateRoles from "./pages/Records/StateRoles";
 import Others from "./pages/Records/Others";
 import Workers from "./pages/Records/Workers";
 import Roles from "./pages/Records/Roles";
+import Login from "./pages/Login";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,7 +36,13 @@ function App() {
         <ReactQueryDevtools initialIsOpen={false} />
         <BrowserRouter>
           <Routes>
-            <Route element={<AppLayout />}>
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<Navigate replace to="dashboard" />} />
               <Route path="degrees" element={<Degrees />} />
               <Route path="subjects" element={<Subjects />} />
@@ -48,6 +56,8 @@ function App() {
               <Route path="semesters/:id" element={<ScheduleDashboard />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
+
+            <Route path="login" element={<Login />} />
           </Routes>
         </BrowserRouter>
 
