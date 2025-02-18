@@ -234,15 +234,25 @@ function WorkerSheetSemester({ workers, semester }) {
       }, */
       head: [columns],
       body: teacherWorkers.map((worker) => {
+
+        // Extract the subjects from current semester
+        const currentSemesterSchedules = worker.schedule_assignments.filter(
+          (schedule) => schedule.semester_id === semester[0].id)
+
+        // console.log(currentSemesterSchedules);
+        
         const groupedSubjects = groupData(
-          worker.schedule_assignments,
+          currentSemesterSchedules,
           "subject_id"
         );
-
+        
         let numHours = 0;
         let totalHours = 2;
 
-        const countTeacherSchedules = worker.schedule_teachers.reduce(
+        const currentSemesterTeacherSchedules = worker.schedule_teachers.filter(
+          (schedule) => schedule.semester_id === semester[0].id);
+
+        const countTeacherSchedules = currentSemesterTeacherSchedules.reduce(
           (acc, item) => {
             const trimmedAcitivity = item.activity.trim();
 
