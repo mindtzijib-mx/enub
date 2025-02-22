@@ -3,7 +3,7 @@ function calculateSemesterGroup(entryYear) {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
 
-  console.log(currentMonth);
+  // console.log(currentMonth);
 
   // Determinar el año escolar actual
   // const schoolYear = currentMonth >= 7 ? currentYear : currentYear - 1; // Si es agosto o después, estamos en el segundo semestre

@@ -117,14 +117,29 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
       margin: { top: 50 },
     });
 
+    console.log(schedulesScholar, scheduleTeacher);
+
+    let scholarYear;
+
+    if (schedulesScholar[0]) {
+      scholarYear = schedulesScholar[0].semesters.school_year;
+    } else {
+      scholarYear = scheduleTeacher[0].semesters.school_year;
+    }
+
     const infoGroup = [
       [
         "ESCUELA NORMAL URBANA",
-        `PERIODO ESCOLAR: ${schedulesScholar[0].semesters.school_year}`,
+        `PERIODO ESCOLAR: ${
+          schedulesScholar[0]?.semesters.school_year ||
+          scheduleTeacher[0].semesters.school_year
+        }`,
       ],
       [`LICENCIATURA EN ${titleDegrees}`, `PLAN: 2022`],
       [
-        `DOCENTE: ${capitalizeName(schedulesScholar[0].workers.name)}`,
+        `DOCENTE: ${capitalizeName(
+          schedulesScholar[0]?.workers.name || scheduleTeacher[0].workers.name
+        )}`,
         `TURNO: MATUTINO`,
       ],
     ];
