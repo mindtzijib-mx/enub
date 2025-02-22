@@ -53,6 +53,8 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
     titleDegrees = "EDUCACIÓN PRIMARIA";
   } else if (numberLEPREES > 0) {
     titleDegrees = "EDUCACIÓN PREESCOLAR";
+  } else {
+    titleDegrees = "EDUCACIÓN EN PRIMARIA";
   }
 
   const generatePDF = () => {
@@ -116,16 +118,6 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
       },
       margin: { top: 50 },
     });
-
-    console.log(schedulesScholar, scheduleTeacher);
-
-    let scholarYear;
-
-    if (schedulesScholar[0]) {
-      scholarYear = schedulesScholar[0].semesters.school_year;
-    } else {
-      scholarYear = scheduleTeacher[0].semesters.school_year;
-    }
 
     const infoGroup = [
       [
