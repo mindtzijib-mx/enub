@@ -446,7 +446,7 @@ function TeacherAssignmentPDF({
         font: "Montserrat-Regular",
         fontSize: 10,
       },
-      body: [["Subdirector Académico"]],
+      body: [[roles[0].role]],
       theme: "plain",
       startY: doc.lastAutoTable.finalY - 8,
     });
