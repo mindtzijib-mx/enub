@@ -107,8 +107,6 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
 
   const groupedSubjects = groupData(filteredSchedulesAssignments, "subject_id");
 
-  // console.log(groupedSubjects);
-
   // Extract Teacher Schedules
 
   const countTeacherSchedules = filteredSchedulesTeacher.reduce((acc, item) => {
@@ -204,26 +202,30 @@ function TeacherAssignment({ workers, scheduleTeachers, scheduleAssignments }) {
             <p>{schedule.quantity * 2}</p>
           </TableRow>
         ))}
-        <TableRow>
-          <p>Tutoria</p>
-          <p></p>
-          <p></p>
-          <p></p>
-          <p></p>
-          <p>1</p>
-        </TableRow>
-        <LongRow>
-          <p>Acto cívico</p>
-          <p>Lunes y fechas conmemorativas</p>
-          <p>1</p>
-        </LongRow>
+        {totalHours == 40 && (
+          <>
+            <TableRow>
+              <p>Tutoria</p>
+              <p></p>
+              <p></p>
+              <p></p>
+              <p></p>
+              <p>1</p>
+            </TableRow>
+            <LongRow>
+              <p>Acto cívico</p>
+              <p>Lunes y fechas conmemorativas</p>
+              <p>1</p>
+            </LongRow>
+          </>
+        )}
         <TableRow>
           <b>Total</b>
           <p></p>
           <p></p>
           <p></p>
           <p></p>
-          <p>{totalHours} hrs</p>
+          <p>{totalHours == 40 ? totalHours : totalHours - 2} hrs</p>
         </TableRow>
       </Table>
       <TeacherAssignmentPDF

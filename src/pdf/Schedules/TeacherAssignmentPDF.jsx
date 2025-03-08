@@ -381,37 +381,59 @@ function TeacherAssignmentPDF({
       theme: "grid",
       startY: doc.lastAutoTable.finalY - 3,
     });
+    if (totalHours == 40) {
+      doc.autoTable({
+        styles: {
+          halign: "center",
+          valign: "middle",
+          font: "Montserrat-Regular",
+          fontSize: 7,
+        },
+        headStyles: {
+          fillColor: [0, 0, 0],
+          font: "Montserrat-Bold",
+        },
+        columnStyles: {
+          0: { cellWidth: 66 },
+          1: { cellWidth: 264 },
+          2: { cellWidth: 66 },
+        },
+        footStyles: {
+          fillColor: [0, 0, 0],
+          font: "Montserrat-Bold",
+        },
+        body: [
+          ["TUTORÍA", "", "1"],
+          ["ACTO CÍVICO", "LUNES Y FECHAS CONMEMORATIVAS", "1"],
+          [
+            "ACADEMIA",
+            "(GENERAL, LICENCIATURA, SEMESTRE Y TRAYECTO FORMATIVO)",
+            "2",
+          ],
+        ],
+        theme: "grid",
+        startY: doc.lastAutoTable.finalY,
+      });
+    }
 
     doc.autoTable({
       styles: {
         halign: "center",
         valign: "middle",
-        font: "Montserrat-Regular",
+        font: "Montserrat-Bold",
         fontSize: 7,
       },
       headStyles: {
         fillColor: [0, 0, 0],
-        font: "Montserrat-Bold",
       },
       columnStyles: {
         0: { cellWidth: 66 },
         1: { cellWidth: 264 },
         2: { cellWidth: 66 },
       },
-      footStyles: {
-        fillColor: [0, 0, 0],
-        font: "Montserrat-Bold",
-      },
       body: [
-        ["TUTORÍA", "", "1"],
-        ["ACTO CÍVICO", "LUNES Y FECHAS CONMEMORATIVAS", "1"],
-        [
-          "ACADEMIA",
-          "(GENERAL, LICENCIATURA, SEMESTRE Y TRAYECTO FORMATIVO)",
-          "2",
-        ],
+        ["TOTAL", "", `${totalHours == 40 ? totalHours : totalHours - 2} HRS`],
       ],
-      foot: [["TOTAL", "", `${totalHours} HRS`]],
       theme: "grid",
       startY: doc.lastAutoTable.finalY,
     });

@@ -13,7 +13,7 @@ import filterHourActivity from "./filterHourActivity.js";
 import capitalizeName from "../../helpers/capitalizeFirstLetter.js";
 import { useUtilities } from "../../features/otherData/useUtilities.js";
 
-function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
+function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher, totalHours }) {
   const { isLoading: isLoadingRoles, roles } = useRoles();
   const { isLoading: isLoadingStateRoles, stateRoles } = useStateRoles();
   const { isLoading: isLoadingUtilities, utilities } = useUtilities();
@@ -146,11 +146,17 @@ function ScheduleTeacherPDF({ schedulesScholar, scheduleTeacher }) {
       theme: "plain",
     });
 
+    let horarioTutoria40Hours = "";
+
+    if (totalHours === 40) {
+      horarioTutoria40Hours = "Homenaje / Tutoria";
+    }
+
     const columns = ["", "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES"];
     const data = [
       [
         "7:00 - 8:50",
-        "Homenaje / Tutoria",
+        horarioTutoria40Hours,
         `${filterHourGroup(
           schedulesScholar,
           "Martes",

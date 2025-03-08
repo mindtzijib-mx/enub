@@ -64,8 +64,6 @@ function ScheduleDashboard() {
     return semester.id === +id;
   });
 
-  console.log(currentSemester);
-
   return (
     <SemesterContext.Provider
       value={{ groups: currentGroups, workers: currentWorkers, subjects }}

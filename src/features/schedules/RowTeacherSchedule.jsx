@@ -33,7 +33,7 @@ const LongRowComplete = styled.div`
   text-align: center;
 `;
 
-function RowTeacherSchedule({ schedulesScholar, scheduleTeacher }) {
+function RowTeacherSchedule({ schedulesScholar, scheduleTeacher, totalHours }) {
   let hasExtraHours = false;
   const afternoonSchedule = schedulesScholar.filter((schedule) => {
     return schedule.start_time === "17:00:00";
@@ -52,9 +52,7 @@ function RowTeacherSchedule({ schedulesScholar, scheduleTeacher }) {
       <TableRow role="row">
         <p>7:00 - 8:50</p>
         <div>
-          <p>
-            <b>Homenaje / Tutoria</b>
-          </p>
+          <p>{totalHours === 40 ? <b>Homenaje / Tutoria</b> : <b>--</b>}</p>
           <HourScheduleSubjectGroup
             schedules={schedulesScholar}
             weekday="Lunes"
